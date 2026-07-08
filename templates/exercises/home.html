@@ -239,32 +239,26 @@
     {% elif active_tab == 'categories' %}
       <section>
         <h2>Categories</h2>
-        <div class="grid">
-          {% for node in category_tree %}
-            <article class="card">
-              <h3>{{ node.category.name }} ({{ node.exercise_count }})</h3>
-              <p>{{ node.category.description|default:"Sense descripcio." }}</p>
-              {% if node.levels %}
-                <ul class="tree">
-                  {% for level in node.levels %}
-                    <li>
-                      <strong>Nivell {{ level.level }} ({{ level.exercise_count }})</strong>
-                      <ul>
-                        {% for exercise_node in level.exercises %}
-                          <li><a href="{{ exercise_node.exercise.get_absolute_url }}">{{ exercise_node.exercise.title|default:"Exercici sense titol" }}</a></li>
-                        {% endfor %}
-                      </ul>
-                    </li>
+        {% for node in category_tree %}
+          <details class="drawer">
+            <summary>{{ node.category.name }} ({{ node.exercise_count }})</summary>
+            <p>{{ node.category.description|default:"Sense descripcio." }}</p>
+            {% for level in node.levels %}
+              <details class="drawer level">
+                <summary>Nivell {{ level.level }} ({{ level.exercise_count }})</summary>
+                <ul>
+                  {% for exercise_node in level.exercises %}
+                    <li><a href="{{ exercise_node.exercise.get_absolute_url }}">{{ exercise_node.exercise.title|default:"Exercici sense titol" }}</a></li>
                   {% endfor %}
                 </ul>
-              {% else %}
-                <p>Encara no hi ha exercicis.</p>
-              {% endif %}
-            </article>
+              </details>
+            {% empty %}
+              <p>Encara no hi ha exercicis.</p>
+            {% endfor %}
+          </details>
           {% empty %}
             <p>Encara no hi ha categories.</p>
           {% endfor %}
-        </div>
       </section>
     {% endif %}
   </div>
