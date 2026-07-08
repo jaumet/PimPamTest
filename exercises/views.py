@@ -327,6 +327,15 @@ def student_logout(request):
 
 def exercise_detail(request, pk):
     exercise = get_object_or_404(Exercise.objects.prefetch_related("questions"), pk=pk)
+    previous_exercise, next_exercise = sibling_exercises(exercise)
+    return render(
+        request,
+        "exercises/exercise_detail.html",
+        {"exercise": exercise, "next_exercise": next_exercise, "previous_exercise": previous_exercise},
+    )
+
+
+def sibling_exercises(exercise):
     exercise_ids = list(
         Exercise.objects.order_by("category__name", "level", "id").values_list("id", flat=True)
     )
@@ -337,11 +346,7 @@ def exercise_detail(request, pk):
         if current_index < len(exercise_ids) - 1
         else None
     )
-    return render(
-        request,
-        "exercises/exercise_detail.html",
-        {"exercise": exercise, "next_exercise": next_exercise, "previous_exercise": previous_exercise},
-    )
+    return previous_exercise, next_exercise
 
 
 @require_http_methods(["POST"])
@@ -376,6 +381,7 @@ def attempt_result(request, pk):
     attempt = get_object_or_404(
         Attempt.objects.select_related("exercise", "pimpam_award__pimpam").prefetch_related("answers__question"), pk=pk
     )
+    previous_exercise, result_next_exercise = sibling_exercises(attempt.exercise)
     next_exercise = None
     if attempt.student:
         for exercise in recommended_exercises_for_student(attempt.student):
@@ -405,7 +411,14 @@ def attempt_result(request, pk):
     return render(
         request,
         "exercises/attempt_result.html",
-        {"attempt": attempt, "display_pimpam": display_pimpam, "is_saved_award": is_saved_award, "next_exercise": next_exercise},
+        {
+            "attempt": attempt,
+            "display_pimpam": display_pimpam,
+            "is_saved_award": is_saved_award,
+            "next_exercise": next_exercise,
+            "previous_exercise": previous_exercise,
+            "result_next_exercise": result_next_exercise,
+        },
     )
 
 

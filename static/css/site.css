@@ -260,6 +260,11 @@ nav a:hover {
   box-shadow: var(--shadow-soft);
 }
 
+.answers-box {
+  position: relative;
+  padding: 0 3.2rem;
+}
+
 .statement {
   margin: 0;
   color: var(--ink);

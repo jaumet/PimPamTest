@@ -103,15 +103,23 @@
   </section>
 {% endif %}
 
-<ol class="answers">
-  {% for answer in attempt.answers.all %}
-    <li class="{% if answer.is_correct %}ok{% else %}fail{% endif %}">
-      <strong>{{ answer.question.prompt }}</strong><br>
-      Resposta: {{ answer.raw_answer }}<br>
-      {% if answer.question.explanation %}{{ answer.question.explanation }}{% endif %}
-    </li>
-  {% endfor %}
-</ol>
+<section class="answers-box">
+  {% if previous_exercise %}
+    <a class="exercise-arrow previous" href="{{ previous_exercise.get_absolute_url }}" aria-label="Exercici anterior">←</a>
+  {% endif %}
+  <ol class="answers">
+    {% for answer in attempt.answers.all %}
+      <li class="{% if answer.is_correct %}ok{% else %}fail{% endif %}">
+        <strong>{{ answer.question.prompt }}</strong><br>
+        Resposta: {{ answer.raw_answer }}<br>
+        {% if answer.question.explanation %}{{ answer.question.explanation }}{% endif %}
+      </li>
+    {% endfor %}
+  </ol>
+  {% if result_next_exercise %}
+    <a class="exercise-arrow next" href="{{ result_next_exercise.get_absolute_url }}" aria-label="Exercici seguent">→</a>
+  {% endif %}
+</section>
 </div>
 
 <script>
