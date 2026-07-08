@@ -9,6 +9,10 @@
   --accent-dark: #14515d;
   --ok: #16794c;
   --fail: #b42318;
+  --radius: 10px;
+  --radius-sm: 7px;
+  --shadow: 0 12px 30px rgb(16 24 40 / 8%);
+  --shadow-soft: 0 6px 18px rgb(16 24 40 / 7%);
 }
 
 :root[data-theme="dark"] {
@@ -22,6 +26,8 @@
   --accent-dark: #7ddce8;
   --ok: #5bd28f;
   --fail: #ff8a80;
+  --shadow: 0 14px 34px rgb(0 0 0 / 28%);
+  --shadow-soft: 0 8px 22px rgb(0 0 0 / 22%);
 }
 
 * {
@@ -32,21 +38,28 @@ body {
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   color: var(--ink);
-  background: var(--surface);
+  background:
+    radial-gradient(circle at top left, color-mix(in srgb, var(--accent) 10%, transparent), transparent 32rem),
+    var(--surface);
 }
 
 a {
   color: var(--accent-dark);
+  text-underline-offset: 0.18em;
 }
 
 .topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
   padding: 0.55rem clamp(0.75rem, 3vw, 2rem);
-  background: var(--paper);
+  background: color-mix(in srgb, var(--paper) 92%, transparent);
   border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(12px);
 }
 
 .brand {
@@ -83,8 +96,19 @@ a {
 nav {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 0.35rem;
   flex-wrap: wrap;
+}
+
+nav a {
+  border-radius: 999px;
+  padding: 0.5rem 0.72rem;
+  text-decoration: none;
+  font-weight: 700;
+}
+
+nav a:hover {
+  background: var(--surface);
 }
 
 .nav-user {
@@ -93,17 +117,17 @@ nav {
 }
 
 .page {
-  width: min(1080px, calc(100% - 2rem));
+  width: min(1180px, calc(100% - 2rem));
   margin: 0 auto;
-  padding: 2rem 0 4rem;
+  padding: clamp(1rem, 3vw, 2.25rem) 0 4rem;
 }
 
 .hero {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
-  gap: 2rem;
+  gap: clamp(1rem, 4vw, 2.5rem);
   align-items: end;
-  padding: 2rem 0;
+  padding: clamp(1.25rem, 4vw, 2.75rem) 0;
 }
 
 .hero h1 {
@@ -127,9 +151,10 @@ nav {
 
 .hero-pimpams {
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: var(--radius);
   padding: 1rem;
   background: var(--paper);
+  box-shadow: var(--shadow-soft);
 }
 
 .hero-pimpams h2 {
@@ -254,26 +279,29 @@ nav {
 .tabs a {
   flex: 0 0 auto;
   border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 0.65rem 0.85rem;
+  border-radius: 999px;
+  padding: 0.7rem 0.95rem;
   background: var(--paper);
   color: var(--ink);
   text-decoration: none;
   font-weight: 700;
+  box-shadow: 0 1px 0 rgb(0 0 0 / 4%);
 }
 
 .tabs a.active {
   border-color: var(--accent);
   background: var(--accent);
   color: white;
+  box-shadow: var(--shadow-soft);
 }
 
 .card,
 fieldset {
   background: var(--paper);
   border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 1rem;
+  border-radius: var(--radius);
+  padding: clamp(0.9rem, 2vw, 1.15rem);
+  box-shadow: var(--shadow-soft);
 }
 
 .tree {
@@ -424,9 +452,10 @@ fieldset {
 .drawer {
   margin-bottom: 0.75rem;
   border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 0.8rem 1rem;
+  border-radius: var(--radius);
+  padding: 0.9rem 1rem;
   background: var(--paper);
+  box-shadow: var(--shadow-soft);
 }
 
 .drawer summary {
@@ -515,10 +544,16 @@ fieldset {
   align-items: center;
   gap: 1rem;
   border: 2px solid var(--pimpam-accent, var(--line));
-  border-radius: 8px;
+  border-radius: var(--radius);
   padding: 1rem;
   background:
     linear-gradient(135deg, color-mix(in srgb, var(--pimpam-color, white) 12%, white), var(--paper) 56%);
+}
+
+.pimpam-card:hover {
+  transform: translateY(-2px);
+  transition: transform 160ms ease, box-shadow 160ms ease;
+  box-shadow: var(--shadow);
 }
 
 .rarity-badge {
@@ -1388,22 +1423,39 @@ select,
 textarea {
   width: 100%;
   border: 1px solid var(--line);
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   padding: 0.65rem 0.75rem;
   font: inherit;
   background: var(--paper);
+  color: var(--ink);
 }
 
 button {
   width: fit-content;
   border: 0;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   padding: 0.75rem 1rem;
   font: inherit;
   font-weight: 650;
   background: var(--accent);
   color: white;
   cursor: pointer;
+}
+
+button:hover,
+.button-link:hover {
+  filter: brightness(1.04);
+  transform: translateY(-1px);
+}
+
+button,
+.button-link {
+  transition: transform 140ms ease, filter 140ms ease, background 140ms ease;
+}
+
+:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--accent) 45%, transparent);
+  outline-offset: 3px;
 }
 
 .theme-toggle {
@@ -1416,7 +1468,7 @@ button {
 .button-link {
   display: inline-block;
   width: fit-content;
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   padding: 0.75rem 1rem;
   background: var(--accent);
   color: white;
@@ -1443,8 +1495,8 @@ button {
 
 .anonymous-layout {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(360px, 1.1fr);
-  gap: 2rem;
+  grid-template-columns: minmax(0, 0.85fr) minmax(380px, 1.15fr);
+  gap: clamp(1.25rem, 4vw, 2.75rem);
   align-items: start;
 }
 
@@ -1454,9 +1506,10 @@ button {
 
 .catalog-preview {
   border: 1px solid var(--line);
-  border-radius: 8px;
-  padding: 1rem;
+  border-radius: var(--radius);
+  padding: clamp(1rem, 2.5vw, 1.35rem);
   background: var(--paper);
+  box-shadow: var(--shadow);
 }
 
 .catalog-preview h2 {
@@ -1466,15 +1519,16 @@ button {
 .pimpam-catalog-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.75rem;
+  gap: 0.85rem;
 }
 
 .pimpam-catalog-grid .pimpam-card {
   display: grid;
   grid-template-columns: 1fr;
   justify-items: center;
-  gap: 0.35rem;
-  padding: 0.75rem 0.5rem;
+  gap: 0.45rem;
+  min-width: 0;
+  padding: 0.9rem 0.5rem 1.4rem;
   text-align: center;
 }
 
@@ -1511,19 +1565,46 @@ button {
   color: var(--fail);
 }
 
+@media (max-width: 980px) {
+  .result-visuals {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .average-card {
+    grid-column: 1 / -1;
+  }
+
+  .anonymous-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 720px) {
   .topbar {
     align-items: flex-start;
     flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  nav {
+    width: 100%;
+    gap: 0.25rem;
+  }
+
+  nav a,
+  .theme-toggle {
+    padding: 0.48rem 0.62rem;
+    font-size: 0.95rem;
+  }
+
+  .logo-brand img {
+    width: min(300px, 82vw);
+    max-height: 72px;
   }
 
   .hero {
     grid-template-columns: 1fr;
     align-items: start;
-  }
-
-  .anonymous-layout {
-    grid-template-columns: 1fr;
   }
 
   .pimpam-catalog-grid {
@@ -1540,5 +1621,38 @@ button {
 
   .result-list span {
     white-space: normal;
+  }
+}
+
+@media (max-width: 460px) {
+  .page {
+    width: min(100% - 1rem, 1180px);
+  }
+
+  .hero h1 {
+    font-size: 2rem;
+  }
+
+  .hero h1 span {
+    font-size: 1.28rem;
+  }
+
+  .tabs {
+    margin-left: -0.25rem;
+    margin-right: -0.25rem;
+    padding: 0 0.25rem 0.45rem;
+  }
+
+  .pimpam-catalog-grid {
+    gap: 0.55rem;
+  }
+
+  .pimpam-card {
+    grid-template-columns: 76px 1fr;
+    gap: 0.75rem;
+  }
+
+  .pimpam-catalog-grid .pimpam-card {
+    grid-template-columns: 1fr;
   }
 }
