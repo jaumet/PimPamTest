@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ca">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PimPamTest</title>
+  <script>
+    (function () {
+      var theme = localStorage.getItem("pimpamtest-theme");
+      if (theme === "dark" || theme === "light") {
+        document.documentElement.dataset.theme = theme;
+      }
+    })();
+  </script>
+  <link rel="stylesheet" href="/static/css/site.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand logo-brand" href="{% url 'home' %}" aria-label="PimPamTest">
+      <img class="logo-light" src="/static/img/pimpamtest_logo_horizontal.svg" alt="PimPamTest">
+      <img class="logo-dark" src="/static/img/pimpamtest_logo_horizontal_dark.svg" alt="PimPamTest">
+    </a>
+    <nav>
+      {% if active_student %}
+        <span class="nav-user">{{ active_student.username }}</span>
+      {% endif %}
+      {% if active_student %}
+        <a href="{% url 'student_access' %}">Canviar usuari</a>
+        <a href="{% url 'student_logout' %}">Sortir</a>
+      {% else %}
+        <a href="{% url 'student_access' %}">Entrar</a>
+      {% endif %}
+      <button class="theme-toggle" type="button" data-theme-toggle aria-label="Canviar tema">Fosc</button>
+    </nav>
+  </header>
+  <main class="page">
+    {% for message in messages %}
+      <p class="message">{{ message }}</p>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </main>
+  <script>
+    (function () {
+      var button = document.querySelector("[data-theme-toggle]");
+      if (!button) return;
+
+      function currentTheme() {
+        return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+      }
+
+      function updateButton() {
+        button.textContent = currentTheme() === "dark" ? "Clar" : "Fosc";
+      }
+
+      button.addEventListener("click", function () {
+        var nextTheme = currentTheme() === "dark" ? "light" : "dark";
+        document.documentElement.dataset.theme = nextTheme;
+        localStorage.setItem("pimpamtest-theme", nextTheme);
+        updateButton();
+      });
+
+      updateButton();
+    })();
+  </script>
+</body>
+</html>

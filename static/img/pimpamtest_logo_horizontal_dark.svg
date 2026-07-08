@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="700" viewBox="105 90 1225 475" role="img" aria-label="PimPamTest logo horitzontal">
+<title>PimPamTest logo horitzontal</title>
+<desc>Logo horitzontal amb mascota PimPam rodona, antenes blau i taronja, ull dret clucat i marca PimPamTest.</desc>
+
+<g transform="translate(0,0)">
+
+<rect x="148.80" y="290.60" width="62.70" height="118.80" rx="31.35" fill="#F7836A" />
+<rect x="508.50" y="290.60" width="62.70" height="118.80" rx="31.35" fill="#F7836A" />
+<line x1="241.20" y1="155.30" x2="302.25" y2="237.80" stroke="#FFFFFF" stroke-width="23.10" stroke-linecap="round" />
+<line x1="478.80" y1="155.30" x2="417.75" y2="237.80" stroke="#FFFFFF" stroke-width="23.10" stroke-linecap="round" />
+<circle cx="228.00" cy="135.50" r="41.25" fill="#F7836A" />
+<circle cx="492.00" cy="135.50" r="41.25" fill="#35AEE2" />
+<circle cx="360.00" cy="350.00" r="155.10" fill="#FFFFFF" stroke="#FFFFFF" stroke-width="26.40" />
+<circle cx="297.30" cy="320.30" r="23.10" fill="#0D0E37" />
+<path d="M 399.60 312.05 Q 429.30 280.70 459.00 312.05" fill="none" stroke="#0D0E37" stroke-width="18.15" stroke-linecap="round" />
+<path d="M 323.70 406.10 Q 360.00 445.70 409.50 406.10" fill="none" stroke="#0D0E37" stroke-width="19.80" stroke-linecap="round" />
+<circle cx="501.90" cy="485.30" r="64.35" fill="#F7836A" />
+<path d="M 473.85 486.95 L 495.30 510.05 L 536.55 458.90" fill="none" stroke="#FFFFFF" stroke-width="18.15" stroke-linecap="round" stroke-linejoin="round" />
+
+<text x="600.00" y="390.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="110.00" font-weight="800" fill="#FFFFFF">PimPam</text>
+<text x="1081.40" y="390.00" font-family="DejaVu Sans, Arial, sans-serif" font-size="110.00" font-weight="800" fill="#F7836A">Test</text>
+</g>
+</svg>

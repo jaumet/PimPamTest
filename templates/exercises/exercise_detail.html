@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>{{ exercise.title|default:"Exercici" }}</h1>
+<p class="meta">Categoria: {{ exercise.category.name }} · nivell {{ exercise.level }}</p>
+<p class="statement">{{ exercise.statement }}</p>
+
+<form method="post" action="{% url 'submit_exercise' exercise.pk %}" class="form">
+  {% csrf_token %}
+  {% for question in exercise.questions.all %}
+    <fieldset>
+      <legend>{{ forloop.counter }}. {{ question.prompt }}</legend>
+      {% if question.kind == "multiple_choice" %}
+        {% for option in question.options %}
+          <label class="choice">
+            <input type="radio" name="question_{{ question.pk }}" value="{{ option }}" required>
+            {{ option }}
+          </label>
+        {% endfor %}
+      {% else %}
+        <input type="text" name="question_{{ question.pk }}" required>
+      {% endif %}
+    </fieldset>
+  {% endfor %}
+  <button type="submit">Enviar respostes</button>
+</form>
+{% endblock %}

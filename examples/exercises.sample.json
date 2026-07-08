@@ -1,0 +1,35 @@
+[
+  {
+    "title": "El parc de la Laia",
+    "statement": "La Laia va anar al parc amb el seu germa. Van jugar a pilota fins que va començar a ploure.",
+    "level": 1,
+    "kind": "open_three",
+    "feedback": "Torna a llegir el text i busca les dades principals.",
+    "category": {
+      "name": "Comprensio lectora",
+      "slug": "comprensio-lectora",
+      "description": "Textos curts amb preguntes de comprensio."
+    },
+    "questions": [
+      {
+        "prompt": "Com es diu la protagonista?",
+        "kind": "open",
+        "order": 1,
+        "correct_answers": ["Laia", "la Laia"]
+      },
+      {
+        "prompt": "Amb qui va anar al parc?",
+        "kind": "open",
+        "order": 2,
+        "correct_answers": ["amb el seu germa", "el seu germa", "germa"]
+      },
+      {
+        "prompt": "Per que van deixar de jugar?",
+        "kind": "multiple_choice",
+        "order": 3,
+        "options": ["Perque era tard", "Perque va ploure", "Perque tenien gana"],
+        "correct_answers": ["Perque va ploure"]
+      }
+    ]
+  }
+]

@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Importar exercicis JSON</h1>
+{% if preview %}
+  <section class="card">
+    <h2>Revisio abans d'importar</h2>
+    <p>He trobat {{ preview.exercise_count }} exercicis amb {{ preview.question_count }} preguntes.</p>
+    <ul>
+      <li>Preguntes obertes: {{ preview.open_question_count }}</li>
+      <li>Preguntes tipus test: {{ preview.choice_question_count }}</li>
+    </ul>
+
+    <h3>Categories</h3>
+    <ul>
+      {% for category, count in preview.categories %}
+        <li>{{ category }}: {{ count }} exercicis</li>
+      {% endfor %}
+    </ul>
+
+    <h3>Nivells</h3>
+    <ul>
+      {% for level, count in preview.levels %}
+        <li>Nivell {{ level }}: {{ count }} exercicis</li>
+      {% endfor %}
+    </ul>
+
+    <h3>Exercicis</h3>
+    <ul>
+      {% for exercise in preview.exercises %}
+        <li>{{ exercise.title }} · {{ exercise.category }} · nivell {{ exercise.level }} · {{ exercise.question_count }} preguntes</li>
+      {% endfor %}
+    </ul>
+
+    <form method="post" class="form">
+      {% csrf_token %}
+      <input type="hidden" name="confirm_import" value="1">
+      <button type="submit">Confirmar importacio</button>
+      <a class="button-link secondary" href="{% url 'exercise_import' %}">Cancel-lar</a>
+    </form>
+  </section>
+{% else %}
+  <form method="post" enctype="multipart/form-data" class="form">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Analitzar JSON</button>
+  </form>
+{% endif %}
+{% endblock %}

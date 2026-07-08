@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Qui ets?</h1>
+{% if active_student %}
+  <p class="message">Ara estas entrant com a {{ active_student.username }}. Escriu un altre nom i numero per canviar.</p>
+{% endif %}
+<form method="post" class="form">
+  {% csrf_token %}
+  <div class="simple-login">
+    {{ form.username.errors }}
+    <label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+    {{ form.username }}
+
+    {{ form.access_code.errors }}
+    <label for="{{ form.access_code.id_for_label }}">{{ form.access_code.label }}</label>
+    {{ form.access_code }}
+  </div>
+  <button type="submit">Comencar</button>
+</form>
+{% endblock %}
