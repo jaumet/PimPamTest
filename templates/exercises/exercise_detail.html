@@ -3,7 +3,15 @@
 {% block content %}
 <h1>{{ exercise.title|default:"Exercici" }}</h1>
 <p class="meta">Categoria: {{ exercise.category.name }} · nivell {{ exercise.level }}</p>
-<p class="statement">{{ exercise.statement }}</p>
+<section class="statement-box">
+  {% if previous_exercise %}
+    <a class="exercise-arrow previous" href="{{ previous_exercise.get_absolute_url }}" aria-label="Exercici anterior">←</a>
+  {% endif %}
+  <p class="statement">{{ exercise.statement }}</p>
+  {% if next_exercise %}
+    <a class="exercise-arrow next" href="{{ next_exercise.get_absolute_url }}" aria-label="Exercici seguent">→</a>
+  {% endif %}
+</section>
 
 <form method="post" action="{% url 'submit_exercise' exercise.pk %}" class="form">
   {% csrf_token %}

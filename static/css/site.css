@@ -251,15 +251,51 @@ nav a:hover {
   font-size: 1.1rem;
 }
 
-.statement {
+.statement-box {
+  position: relative;
   border: 2px solid var(--accent);
-  border-radius: 8px;
-  padding: 1.25rem;
+  border-radius: var(--radius);
+  padding: 1.25rem clamp(3.3rem, 8vw, 4.25rem);
   background: var(--paper);
+  box-shadow: var(--shadow-soft);
+}
+
+.statement {
+  margin: 0;
   color: var(--ink);
   font-size: 1.18rem;
   line-height: 1.55;
   font-weight: 520;
+}
+
+.exercise-arrow {
+  position: absolute;
+  top: 50%;
+  display: grid;
+  place-items: center;
+  width: 2.45rem;
+  height: 2.45rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  color: var(--accent-dark);
+  font-size: 1.55rem;
+  font-weight: 900;
+  text-decoration: none;
+  transform: translateY(-50%);
+}
+
+.exercise-arrow:hover {
+  background: var(--accent);
+  color: white;
+}
+
+.exercise-arrow.previous {
+  left: 0.7rem;
+}
+
+.exercise-arrow.next {
+  right: 0.7rem;
 }
 
 .grid {
@@ -1091,6 +1127,15 @@ fieldset {
 
 .award {
   margin: 1.5rem 0;
+}
+
+.login-notice {
+  margin: 1rem 0;
+  border-color: color-mix(in srgb, var(--accent) 42%, var(--line));
+}
+
+.login-notice h2 {
+  margin-top: 0;
 }
 
 .hidden-before-celebration {

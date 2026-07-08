@@ -327,7 +327,21 @@ def student_logout(request):
 
 def exercise_detail(request, pk):
     exercise = get_object_or_404(Exercise.objects.prefetch_related("questions"), pk=pk)
-    return render(request, "exercises/exercise_detail.html", {"exercise": exercise})
+    exercise_ids = list(
+        Exercise.objects.order_by("category__name", "level", "id").values_list("id", flat=True)
+    )
+    current_index = exercise_ids.index(exercise.pk)
+    previous_exercise = Exercise.objects.filter(pk=exercise_ids[current_index - 1]).first() if current_index > 0 else None
+    next_exercise = (
+        Exercise.objects.filter(pk=exercise_ids[current_index + 1]).first()
+        if current_index < len(exercise_ids) - 1
+        else None
+    )
+    return render(
+        request,
+        "exercises/exercise_detail.html",
+        {"exercise": exercise, "next_exercise": next_exercise, "previous_exercise": previous_exercise},
+    )
 
 
 @require_http_methods(["POST"])
@@ -368,7 +382,31 @@ def attempt_result(request, pk):
             if exercise.pk != attempt.exercise_id:
                 next_exercise = exercise
                 break
-    return render(request, "exercises/attempt_result.html", {"attempt": attempt, "next_exercise": next_exercise})
+
+    display_pimpam = None
+    is_saved_award = False
+    if hasattr(attempt, "pimpam_award"):
+        display_pimpam = attempt.pimpam_award.pimpam
+        is_saved_award = True
+    elif attempt.score > 0:
+        max_rarity = 1
+        if attempt.score >= 90:
+            max_rarity = 5
+        elif attempt.score >= 75:
+            max_rarity = 4
+        elif attempt.score >= 50:
+            max_rarity = 3
+        elif attempt.score >= 25:
+            max_rarity = 2
+        candidates = list(PimPam.objects.filter(rarity__lte=max_rarity).order_by("rarity", "name"))
+        if candidates:
+            display_pimpam = candidates[(attempt.pk + int(attempt.score)) % len(candidates)]
+
+    return render(
+        request,
+        "exercises/attempt_result.html",
+        {"attempt": attempt, "display_pimpam": display_pimpam, "is_saved_award": is_saved_award, "next_exercise": next_exercise},
+    )
 
 
 @staff_member_required

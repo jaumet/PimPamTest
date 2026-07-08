@@ -11,10 +11,10 @@
     <span></span>
   </div>
   <div class="celebration-prize">
-    {% if attempt.pimpam_award %}
-      <p>Has guanyat un PimPam!</p>
-      <article class="pimpam-card rarity-{{ attempt.pimpam_award.pimpam.rarity }}" style="{{ attempt.pimpam_award.pimpam.visual_style }}">
-        <div class="pimpam-creature {{ attempt.pimpam_award.pimpam.visual_class }}">
+    {% if display_pimpam %}
+      <p>{% if is_saved_award %}Has guanyat un PimPam!{% else %}Ho has fet be!{% endif %}</p>
+      <article class="pimpam-card rarity-{{ display_pimpam.rarity }}" style="{{ display_pimpam.visual_style }}">
+        <div class="pimpam-creature {{ display_pimpam.visual_class }}">
           <span class="ear left"></span>
           <span class="ear right"></span>
           <span class="tail"></span>
@@ -27,11 +27,11 @@
           <span class="eye right"></span>
           <span class="nose"></span>
           <span class="mark"></span>
-          <span class="initial">{{ attempt.pimpam_award.pimpam.initial }}</span>
+          <span class="initial">{{ display_pimpam.initial }}</span>
         </div>
         <div>
-          <h3>{{ attempt.pimpam_award.pimpam.name }}</h3>
-          <p>{{ attempt.pimpam_award.pimpam.animal }} · {{ attempt.pimpam_award.pimpam.star_label }}</p>
+          <h3>{{ display_pimpam.name }}</h3>
+          <p>{{ display_pimpam.animal }} · {{ display_pimpam.star_label }}</p>
         </div>
       </article>
     {% else %}
@@ -52,6 +52,14 @@
 <h1>Resultat</h1>
 <p class="score">{{ attempt.correct_count }} de {{ attempt.total_count }} correctes - {{ attempt.score }}%</p>
 
+{% if not attempt.student %}
+  <section class="login-notice card">
+    <h2>Vols desar els resultats?</h2>
+    <p>Ara has fet l'exercici sense usuari. Per guardar resultats i PimPams, entra amb el teu nom i un numero de 4 xifres.</p>
+    <a class="button-link" href="{% url 'student_access' %}">Entrar o registrar-me</a>
+  </section>
+{% endif %}
+
 <nav class="result-actions" aria-label="Que vols fer ara">
   <a class="button-link" href="{{ attempt.exercise.get_absolute_url }}">Repetir l'exercici</a>
   {% if next_exercise %}
@@ -59,14 +67,16 @@
   {% endif %}
   {% if attempt.student %}
     <a class="button-link secondary" href="{% url 'home' %}?tab=pimpams">Veure els teus PimPams</a>
+  {% else %}
+    <a class="button-link secondary" href="{% url 'student_access' %}">Entrar per desar resultats</a>
   {% endif %}
 </nav>
 
-{% if attempt.pimpam_award %}
+{% if display_pimpam %}
   <section class="award">
-    <h2>Has guanyat un PimPam!</h2>
-    <article class="pimpam-card rarity-{{ attempt.pimpam_award.pimpam.rarity }}" style="{{ attempt.pimpam_award.pimpam.visual_style }}">
-      <div class="pimpam-creature {{ attempt.pimpam_award.pimpam.visual_class }}">
+    <h2>{% if is_saved_award %}Has guanyat un PimPam!{% else %}PimPam de mostra{% endif %}</h2>
+    <article class="pimpam-card rarity-{{ display_pimpam.rarity }}" style="{{ display_pimpam.visual_style }}">
+      <div class="pimpam-creature {{ display_pimpam.visual_class }}">
         <span class="ear left"></span>
         <span class="ear right"></span>
         <span class="tail"></span>
@@ -79,12 +89,15 @@
         <span class="eye right"></span>
         <span class="nose"></span>
         <span class="mark"></span>
-        <span class="initial">{{ attempt.pimpam_award.pimpam.initial }}</span>
+        <span class="initial">{{ display_pimpam.initial }}</span>
       </div>
       <div>
-        <h3>{{ attempt.pimpam_award.pimpam.name }}</h3>
-        <p>{{ attempt.pimpam_award.pimpam.animal }} · {{ attempt.pimpam_award.pimpam.star_label }}</p>
-        <p>{{ attempt.pimpam_award.pimpam.description }}</p>
+        <h3>{{ display_pimpam.name }}</h3>
+        <p>{{ display_pimpam.animal }} · {{ display_pimpam.star_label }}</p>
+        <p>{{ display_pimpam.description }}</p>
+        {% if not is_saved_award %}
+          <p class="meta">Aquest PimPam no s'ha desat. Entra amb usuari per guardar els premis.</p>
+        {% endif %}
       </div>
     </article>
   </section>
