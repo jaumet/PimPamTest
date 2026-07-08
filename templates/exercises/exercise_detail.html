@@ -3,11 +3,14 @@
 {% block content %}
 <h1>{{ exercise.title|default:"Exercici" }}</h1>
 <p class="meta">Categoria: {{ exercise.category.name }} · nivell {{ exercise.level }}</p>
+{% if instruction_text %}
+  <p class="exercise-instruction">{{ instruction_text }}</p>
+{% endif %}
 <section class="statement-box">
   {% if previous_exercise %}
     <a class="exercise-arrow previous" href="{{ previous_exercise.get_absolute_url }}" aria-label="Exercici anterior">←</a>
   {% endif %}
-  <p class="statement">{{ exercise.statement }}</p>
+  <p class="statement">{{ statement_text }}</p>
   {% if next_exercise %}
     <a class="exercise-arrow next" href="{{ next_exercise.get_absolute_url }}" aria-label="Exercici seguent">→</a>
   {% endif %}
@@ -15,11 +18,14 @@
 
 <form method="post" action="{% url 'submit_exercise' exercise.pk %}" class="form">
   {% csrf_token %}
-  {% for question in exercise.questions.all %}
+  {% for node in question_nodes %}
+    {% with question=node.question %}
     <fieldset>
-      <legend>{{ forloop.counter }}. {{ question.prompt }}</legend>
+      {% if question_nodes|length > 1 %}
+        <legend>{{ forloop.counter }}. {{ question.prompt }}</legend>
+      {% endif %}
       {% if question.kind == "multiple_choice" %}
-        {% for option in question.options %}
+        {% for option in node.options %}
           <label class="choice">
             <input type="radio" name="question_{{ question.pk }}" value="{{ option }}" required>
             {{ option }}
@@ -29,6 +35,7 @@
         <input type="text" name="question_{{ question.pk }}" required>
       {% endif %}
     </fieldset>
+    {% endwith %}
   {% endfor %}
   <button type="submit">Enviar respostes</button>
 </form>

@@ -1,6 +1,7 @@
 from decimal import Decimal
 import json
 from math import isqrt
+import random
 
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
@@ -328,10 +329,31 @@ def student_logout(request):
 def exercise_detail(request, pk):
     exercise = get_object_or_404(Exercise.objects.prefetch_related("questions"), pk=pk)
     previous_exercise, next_exercise = sibling_exercises(exercise)
+    questions = list(exercise.questions.all())
+    statement_text = exercise.statement
+    instruction_text = ""
+    if len(questions) == 1:
+        statement_text = questions[0].prompt
+        instruction_text = exercise.statement
+
+    question_nodes = []
+    for question in questions:
+        options = list(question.options)
+        if question.kind == Question.QuestionKind.MULTIPLE_CHOICE:
+            random.SystemRandom().shuffle(options)
+        question_nodes.append({"question": question, "options": options})
+
     return render(
         request,
         "exercises/exercise_detail.html",
-        {"exercise": exercise, "next_exercise": next_exercise, "previous_exercise": previous_exercise},
+        {
+            "exercise": exercise,
+            "instruction_text": instruction_text,
+            "next_exercise": next_exercise,
+            "previous_exercise": previous_exercise,
+            "question_nodes": question_nodes,
+            "statement_text": statement_text,
+        },
     )
 
 

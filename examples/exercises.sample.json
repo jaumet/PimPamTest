@@ -31,5 +31,30 @@
         "correct_answers": ["Perque va ploure"]
       }
     ]
+  },
+  {
+    "title": "Els ecosistemes",
+    "statement": "Tria la resposta correcta sobre els ecosistemes.",
+    "level": 1,
+    "kind": "multiple_choice",
+    "category": {
+      "name": "Medi",
+      "slug": "medi"
+    },
+    "questions": [
+      {
+        "prompt": "Que es un ecosistema?",
+        "kind": "multiple_choice",
+        "order": 1,
+        "options": [
+          "Un conjunt d'essers vius i el medi on viuen.",
+          "Una maquina per moure objectes.",
+          "Una roca molt dura.",
+          "Una eina per mesurar el temps."
+        ],
+        "correct_answers": ["Un conjunt d'essers vius i el medi on viuen."],
+        "explanation": "Un ecosistema inclou els essers vius i el lloc on viuen."
+      }
+    ]
   }
 ]
