@@ -1,4 +1,5 @@
 from decimal import Decimal
+from collections import defaultdict
 import json
 from math import isqrt
 import random
@@ -125,6 +126,72 @@ def summarize_import_payload(payload):
     summary["categories"] = sorted(summary["categories"].items())
     summary["levels"] = sorted(summary["levels"].items())
     return summary
+
+
+def exercise_duplicate_key(exercise):
+    return exercise_content_key(exercise)
+
+
+def exercise_dedupe_group_key(exercise):
+    title = exercise.title.strip().casefold()
+    if not title:
+        title = f"__sense_titol__:{exercise.statement.strip().casefold()}"
+    return (
+        exercise.category_id,
+        exercise.level,
+        title,
+    )
+
+
+def exercise_content_key(exercise):
+    questions = []
+    for question in exercise.questions.all():
+        questions.append(
+            (
+                question.order,
+                question.prompt.strip(),
+                question.kind,
+                tuple(question.options),
+                tuple(question.correct_answers),
+                question.explanation.strip(),
+            )
+        )
+    return (
+        exercise.category_id,
+        exercise.level,
+        exercise.title.strip(),
+        exercise.statement.strip(),
+        exercise.image.strip(),
+        exercise.kind,
+        exercise.feedback.strip(),
+        tuple(questions),
+    )
+
+
+def find_duplicate_exercise_groups(keep_version="oldest"):
+    groups = defaultdict(list)
+    exercises = Exercise.objects.select_related("category").prefetch_related("questions").order_by("created_at", "id")
+    for exercise in exercises:
+        groups[exercise_dedupe_group_key(exercise)].append(exercise)
+
+    duplicate_groups = []
+    for group in groups.values():
+        if len(group) <= 1:
+            continue
+        ordered_group = sorted(group, key=lambda exercise: (exercise.created_at, exercise.pk))
+        keep = ordered_group[-1] if keep_version == "newest" else ordered_group[0]
+        duplicates = [exercise for exercise in ordered_group if exercise.pk != keep.pk]
+        content_keys = {exercise_content_key(exercise) for exercise in ordered_group}
+        duplicate_groups.append(
+            {
+                "keep": keep,
+                "duplicates": duplicates,
+                "duplicate_count": len(duplicates),
+                "all_exercises": ordered_group,
+                "has_different_content": len(content_keys) > 1,
+            }
+        )
+    return duplicate_groups
 
 
 def home(request):
@@ -494,3 +561,34 @@ def exercise_import(request):
         request.session["exercise_import_payload"] = json.loads(json.dumps(payload))
         preview = summarize_import_payload(payload)
     return render(request, "exercises/exercise_import.html", {"form": form, "preview": preview})
+
+
+@staff_member_required
+def exercise_dedupe(request):
+    keep_version = request.POST.get("keep_version") or request.GET.get("keep_version") or "oldest"
+    if keep_version not in {"oldest", "newest"}:
+        keep_version = "oldest"
+
+    duplicate_groups = find_duplicate_exercise_groups(keep_version=keep_version)
+    duplicate_ids = [
+        exercise.pk
+        for group in duplicate_groups
+        for exercise in group["duplicates"]
+    ]
+
+    if request.method == "POST" and request.POST.get("confirm_dedupe") == "1":
+        deleted_count = 0
+        if duplicate_ids:
+            deleted_count, _details = Exercise.objects.filter(pk__in=duplicate_ids).delete()
+        messages.success(request, f"S'han eliminat {deleted_count} registres relacionats amb exercicis duplicats.")
+        return redirect("admin:exercises_exercise_changelist")
+
+    return render(
+        request,
+        "exercises/exercise_dedupe.html",
+        {
+            "duplicate_groups": duplicate_groups,
+            "duplicate_exercise_count": len(duplicate_ids),
+            "keep_version": keep_version,
+        },
+    )

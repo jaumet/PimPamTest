@@ -51,6 +51,7 @@ class Exercise(models.Model):
 
     title = models.CharField("titol", max_length=180, blank=True)
     statement = models.TextField("enunciat")
+    image = models.URLField("imatge", max_length=500, blank=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name="exercises")
     level = models.PositiveSmallIntegerField("nivell", default=1)
     kind = models.CharField("tipus", max_length=30, choices=ExerciseKind.choices)

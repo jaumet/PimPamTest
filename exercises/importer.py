@@ -19,6 +19,7 @@ def import_exercises(payload):
         exercise = Exercise.objects.create(
             title=item.get("title", ""),
             statement=item["statement"],
+            image=item.get("image", ""),
             category=category,
             level=item.get("level", 1),
             kind=item.get("kind", Exercise.ExerciseKind.OPEN_THREE),

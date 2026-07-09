@@ -12,7 +12,8 @@
   </div>
   <div class="celebration-prize">
     {% if display_pimpam %}
-      <p>{% if is_saved_award %}Has guanyat un PimPam!{% else %}Ho has fet be!{% endif %}</p>
+      <p>Has guanyat el {{ display_pimpam.name }}</p>
+      <small class="prize-stars">{{ display_pimpam.rarity }} estrelles</small>
       <article class="pimpam-card rarity-{{ display_pimpam.rarity }}" style="{{ display_pimpam.visual_style }}">
         <div class="pimpam-creature {{ display_pimpam.visual_class }}">
           <span class="ear left"></span>
@@ -61,10 +62,10 @@
 {% endif %}
 
 <nav class="result-actions" aria-label="Que vols fer ara">
-  <a class="button-link" href="{{ attempt.exercise.get_absolute_url }}">Repetir l'exercici</a>
   {% if next_exercise %}
-    <a class="button-link secondary" href="{{ next_exercise.get_absolute_url }}">Fer el seguent proposat</a>
+    <a class="button-link result-primary-action" href="{{ next_exercise.get_absolute_url }}" autofocus>Fer el seguent proposat</a>
   {% endif %}
+  <a class="button-link secondary" href="{{ attempt.exercise.get_absolute_url }}">Repetir l'exercici</a>
   {% if attempt.student %}
     <a class="button-link secondary" href="{% url 'home' %}?tab=pimpams">Veure els teus PimPams</a>
   {% else %}

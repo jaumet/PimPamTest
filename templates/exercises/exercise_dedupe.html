@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Netejar exercicis duplicats</h1>
+
+{% if duplicate_groups %}
+  <section class="card">
+    <h2>Revisio abans d'eliminar</h2>
+    <p>He trobat {{ duplicate_exercise_count }} exercicis duplicats en {{ duplicate_groups|length }} grups.</p>
+    <p>Es consideren duplicats els exercicis amb el mateix titol dins la mateixa categoria i nivell. Si el titol esta buit, es compara l'enunciat.</p>
+
+    <form method="get" class="form compact-form">
+      <fieldset>
+        <legend>Quina versio vols conservar?</legend>
+        <label>
+          <input type="radio" name="keep_version" value="oldest" {% if keep_version == "oldest" %}checked{% endif %}>
+          La mes vella
+        </label>
+        <label>
+          <input type="radio" name="keep_version" value="newest" {% if keep_version == "newest" %}checked{% endif %}>
+          La mes nova
+        </label>
+      </fieldset>
+      <button type="submit" class="secondary">Actualitzar revisio</button>
+    </form>
+
+    {% for group in duplicate_groups %}
+      <details class="drawer">
+        <summary>
+          Conserva #{{ group.keep.pk }} · {{ group.keep.title|default:"Exercici sense titol" }}
+          (elimina {{ group.duplicate_count }})
+        </summary>
+        <p>{{ group.keep.category.name }} · nivell {{ group.keep.level }}</p>
+        {% if group.has_different_content %}
+          <p><strong>Atencio:</strong> aquests exercicis tenen el mateix titol, pero el contingut no es identic.</p>
+        {% endif %}
+        <h3>Exercici conservat</h3>
+        <p>#{{ group.keep.pk }} · creat {{ group.keep.created_at|date:"d/m/Y H:i" }}</p>
+        <p>{{ group.keep.statement|truncatechars:220 }}</p>
+        <h3>Exercicis que s'eliminaran</h3>
+        <ul>
+          {% for exercise in group.duplicates %}
+            <li>
+              <strong>Eliminar #{{ exercise.pk }}</strong> · creat {{ exercise.created_at|date:"d/m/Y H:i" }}<br>
+              {{ exercise.statement|truncatechars:220 }}
+            </li>
+          {% endfor %}
+        </ul>
+      </details>
+    {% endfor %}
+
+    <form method="post" class="form">
+      {% csrf_token %}
+      <input type="hidden" name="confirm_dedupe" value="1">
+      <input type="hidden" name="keep_version" value="{{ keep_version }}">
+      <button type="submit">Confirmar i eliminar duplicats</button>
+      <a class="button-link secondary" href="{% url 'admin:exercises_exercise_changelist' %}">Cancel-lar</a>
+    </form>
+  </section>
+{% else %}
+  <section class="card">
+    <h2>No hi ha duplicats</h2>
+    <p>No he trobat exercicis duplicats amb el mateix titol dins la mateixa categoria i nivell.</p>
+    <a class="button-link" href="{% url 'admin:exercises_exercise_changelist' %}">Tornar als exercicis</a>
+  </section>
+{% endif %}
+{% endblock %}

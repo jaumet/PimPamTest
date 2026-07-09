@@ -15,6 +15,11 @@
     <a class="exercise-arrow next" href="{{ next_exercise.get_absolute_url }}" aria-label="Exercici seguent">→</a>
   {% endif %}
 </section>
+{% if exercise.image %}
+  <figure class="exercise-image">
+    <img src="{{ exercise.image }}" alt="Imatge de l'exercici {{ exercise.title|default:'sense titol' }}">
+  </figure>
+{% endif %}
 
 <form method="post" action="{% url 'submit_exercise' exercise.pk %}" class="form">
   {% csrf_token %}

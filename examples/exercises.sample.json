@@ -2,6 +2,7 @@
   {
     "title": "El parc de la Laia",
     "statement": "La Laia va anar al parc amb el seu germa. Van jugar a pilota fins que va començar a ploure.",
+    "image": "",
     "level": 1,
     "kind": "open_three",
     "feedback": "Torna a llegir el text i busca les dades principals.",
@@ -35,6 +36,7 @@
   {
     "title": "Els ecosistemes",
     "statement": "Tria la resposta correcta sobre els ecosistemes.",
+    "image": "/static/img/exemples/ecosistema.png",
     "level": 1,
     "kind": "multiple_choice",
     "category": {

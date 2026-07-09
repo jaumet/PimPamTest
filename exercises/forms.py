@@ -39,7 +39,7 @@ class CategoryForm(forms.ModelForm):
 class ExerciseForm(forms.ModelForm):
     class Meta:
         model = Exercise
-        fields = ["title", "statement", "category", "level", "kind", "feedback"]
+        fields = ["title", "statement", "image", "category", "level", "kind", "feedback"]
 
 
 class QuestionForm(forms.ModelForm):

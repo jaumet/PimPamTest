@@ -309,6 +309,22 @@ nav a:hover {
   right: 0.7rem;
 }
 
+.exercise-image {
+  margin: 1rem 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--paper);
+  box-shadow: var(--shadow-soft);
+}
+
+.exercise-image img {
+  display: block;
+  width: 100%;
+  max-height: min(460px, 55vh);
+  object-fit: contain;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -1253,6 +1269,13 @@ fieldset {
   font-weight: 900;
 }
 
+.prize-stars {
+  margin-top: -0.75rem;
+  color: #ffd166;
+  font-size: clamp(1.1rem, 4vw, 1.6rem);
+  font-weight: 900;
+}
+
 .celebration-prize .pimpam-card {
   color: var(--ink);
   transform: scale(1.12);
@@ -1545,7 +1568,13 @@ button,
   display: flex;
   gap: 0.75rem;
   flex-wrap: wrap;
+  justify-content: flex-end;
   margin: 1rem 0 1.5rem;
+}
+
+.result-primary-action {
+  order: 99;
+  box-shadow: var(--shadow);
 }
 
 .empty-pimpams {
