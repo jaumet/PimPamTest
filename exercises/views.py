@@ -6,7 +6,7 @@ import random
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db import transaction
-from django.db.models import Count
+from django.db.models import Count, Prefetch
 from django.forms import modelformset_factory
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_http_methods
@@ -145,7 +145,12 @@ def home(request):
         )
 
     category_tree = []
-    categories = Category.objects.prefetch_related("exercises").order_by("name")
+    categories = (
+        Category.objects.annotate(exercise_total=Count("exercises"))
+        .filter(exercise_total__gt=0)
+        .prefetch_related(Prefetch("exercises", queryset=Exercise.objects.order_by("level", "title", "id")))
+        .order_by("name")
+    )
     for category in categories:
         levels = {}
         for exercise in category.exercises.all():
