@@ -1583,19 +1583,150 @@ button,
 
 .anonymous-layout {
   display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(380px, 1.15fr);
-  gap: clamp(1.25rem, 4vw, 2.75rem);
+  grid-template-columns: minmax(0, 0.92fr) minmax(360px, 1.08fr);
+  gap: clamp(1.25rem, 4vw, 2.5rem);
   align-items: start;
 }
 
 .anonymous-hero {
+  margin-bottom: clamp(1.15rem, 3vw, 1.8rem);
+  padding: clamp(1.25rem, 4vw, 2rem);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(135deg, color-mix(in srgb, var(--accent) 10%, transparent), transparent 46%),
+    var(--paper);
+  box-shadow: var(--shadow);
+}
+
+.anonymous-hero h1 {
+  max-width: 11ch;
+  margin: 0 0 0.8rem;
+  font-size: clamp(2.35rem, 7vw, 4.8rem);
+  line-height: 0.96;
+}
+
+.anonymous-hero h1 span {
   display: block;
+  margin-top: 0.5rem;
+  color: var(--accent-dark);
+  font-size: clamp(1.2rem, 3.2vw, 1.85rem);
+  line-height: 1.12;
+}
+
+.anonymous-hero p {
+  max-width: 58ch;
+  margin: 0 0 0.7rem;
+  color: var(--muted);
+  font-size: 1.04rem;
+  line-height: 1.55;
+}
+
+.anonymous-cta {
+  margin-top: 0.55rem;
+  font-size: 1.03rem;
+}
+
+.try-exercises,
+.anonymous-categories {
+  margin-top: clamp(1rem, 3vw, 1.6rem);
+}
+
+.section-heading {
+  margin-bottom: 0.85rem;
+}
+
+.section-heading p {
+  margin: 0 0 0.2rem;
+  color: var(--accent-dark);
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: clamp(1.35rem, 3vw, 2rem);
+}
+
+.try-copy {
+  max-width: 58ch;
+  margin: -0.25rem 0 0.9rem;
+  color: var(--muted);
+  font-weight: 650;
+  line-height: 1.45;
+}
+
+.category-choice-grid {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.category-choice {
+  display: grid;
+  grid-template-columns: minmax(130px, 0.9fr) minmax(0, 1.25fr);
+  gap: 0.9rem;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 1rem;
+  background: var(--paper);
+  box-shadow: var(--shadow-soft);
+}
+
+.category-choice h3 {
+  margin: 0 0 0.25rem;
+  font-size: 1.12rem;
+}
+
+.category-choice p {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.level-links {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+  gap: 0.55rem;
+}
+
+.level-links a {
+  display: grid;
+  gap: 0.15rem;
+  min-height: 4rem;
+  align-content: center;
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--line));
+  border-radius: var(--radius-sm);
+  padding: 0.62rem 0.72rem;
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface));
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.level-links a:hover {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: white;
+}
+
+.level-links span {
+  font-weight: 900;
+}
+
+.level-links small {
+  color: inherit;
+  font-weight: 650;
+  opacity: 0.78;
 }
 
 .catalog-preview {
+  position: sticky;
+  top: 1rem;
   border: 1px solid var(--line);
   border-radius: var(--radius);
-  padding: clamp(1rem, 2.5vw, 1.35rem);
+  padding: clamp(1rem, 2.5vw, 1.45rem);
   background: var(--paper);
   box-shadow: var(--shadow);
 }
@@ -1607,7 +1738,10 @@ button,
 .pimpam-catalog-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.85rem;
+  gap: 0.75rem;
+  max-height: calc(100vh - 13rem);
+  overflow: auto;
+  padding-right: 0.2rem;
 }
 
 .pimpam-catalog-grid .pimpam-card {
@@ -1665,6 +1799,14 @@ button,
   .anonymous-layout {
     grid-template-columns: 1fr;
   }
+
+  .catalog-preview {
+    position: static;
+  }
+
+  .pimpam-catalog-grid {
+    max-height: none;
+  }
 }
 
 @media (max-width: 720px) {
@@ -1699,6 +1841,10 @@ button,
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
+  .category-choice {
+    grid-template-columns: 1fr;
+  }
+
   .result-list li {
     display: grid;
   }
@@ -1723,6 +1869,18 @@ button,
 
   .hero h1 span {
     font-size: 1.28rem;
+  }
+
+  .anonymous-hero {
+    padding: 1rem;
+  }
+
+  .anonymous-hero h1 {
+    font-size: 2.35rem;
+  }
+
+  .level-links {
+    grid-template-columns: 1fr;
   }
 
   .tabs {

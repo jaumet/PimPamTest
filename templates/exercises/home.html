@@ -220,50 +220,42 @@
 {% else %}
 <div class="anonymous-layout">
   <div>
-    <section class="hero anonymous-hero">
+    <section class="anonymous-hero">
       <div>
         <h1>Pim Pam Test<br><span>fes exercicis i guanya premis PimPams</span></h1>
-        <p>Tria una categoria i comenca a practicar.</p>
+        <p>Els PimPams son premis que pots guanyar quan fas exercicis. Cada un es diferent i pot tenir d'1 a 5 estrelles.</p>
+        <p>Entra amb el teu nom i un numero de 4 xifres per guardar els resultats i els premis que vagis aconseguint.</p>
+        <a class="button-link anonymous-cta" href="{% url 'student_access' %}">Entrar o registrar-me</a>
       </div>
     </section>
 
-    <nav class="tabs" aria-label="Seccions de portada">
-      <a class="{% if active_tab == 'pimpams' %}active{% endif %}" href="?tab=pimpams">PimPams</a>
-      <a class="{% if active_tab == 'categories' %}active{% endif %}" href="?tab=categories">Categories</a>
-    </nav>
-
-    {% if active_tab == 'pimpams' %}
-      <section class="empty-pimpams">
-        <h2>PimPams</h2>
-        <p>Els PimPams son premis que pots guanyar quan fas exercicis. Cada un es diferent i pot tenir d'1 a 5 estrelles.</p>
-        <p>Entra amb el teu nom i un numero de 4 xifres per començar a jugar i guardar els teus premis.</p>
-        <a class="button-link" href="{% url 'student_access' %}">Comencar</a>
-      </section>
-    {% elif active_tab == 'categories' %}
-      <section>
-        <h2>Categories</h2>
+    <section class="try-exercises">
+      <div class="section-heading">
+        <p>Prova de fer exercicis</p>
+        <h2>Tria categoria i nivell</h2>
+      </div>
+      <p class="try-copy">Pots començar sense entrar. Si vols guardar resultats i PimPams, entra abans amb el teu nom.</p>
+      <div class="category-choice-grid">
         {% for node in category_tree %}
-          <details class="drawer">
-            <summary>{{ node.category.name }} ({{ node.exercise_count }})</summary>
-            <p>{{ node.category.description|default:"Sense descripcio." }}</p>
-            {% for level in node.levels %}
-              <details class="drawer level">
-                <summary>Nivell {{ level.level }} ({{ level.exercise_count }})</summary>
-                <ul>
-                  {% for exercise_node in level.exercises %}
-                    <li><a href="{{ exercise_node.exercise.get_absolute_url }}">{{ exercise_node.exercise.title|default:"Exercici sense titol" }}</a></li>
-                  {% endfor %}
-                </ul>
-              </details>
-            {% empty %}
-              <p>Encara no hi ha exercicis.</p>
-            {% endfor %}
-          </details>
-          {% empty %}
-            <p>Encara no hi ha categories.</p>
-          {% endfor %}
-      </section>
-    {% endif %}
+          <article class="category-choice">
+            <div>
+              <h3>{{ node.category.name }}</h3>
+              <p>{{ node.exercise_count }} exercicis</p>
+            </div>
+            <div class="level-links">
+              {% for level in node.levels %}
+                <a href="{{ level.exercises.0.exercise.get_absolute_url }}">
+                  <span>Nivell {{ level.level }}</span>
+                  <small>{{ level.exercise_count }} exercicis</small>
+                </a>
+              {% endfor %}
+            </div>
+          </article>
+        {% empty %}
+          <p>Encara no hi ha categories.</p>
+        {% endfor %}
+      </div>
+    </section>
   </div>
 
   <aside class="catalog-preview">
