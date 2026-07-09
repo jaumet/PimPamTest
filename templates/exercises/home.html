@@ -105,7 +105,10 @@
           </div>
           <div class="waffle" style="--waffle-rows: {{ attempt_waffle_rows }}" aria-label="Exercicis fets per categoria">
             {% for item in attempt_waffle %}
-              <span style="--waffle-color: {{ item.color }}" title="{{ item.attempt.exercise.category.name }} · {{ item.attempt.score }}%"></span>
+              <span
+                style="--category-color: {{ item.category_color }}; --score-pct: {{ item.score_percent }}"
+                title="{{ item.attempt.exercise.category.name }} · {{ item.attempt.score }}%">
+              </span>
             {% endfor %}
           </div>
           <div class="legend">

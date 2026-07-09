@@ -216,7 +216,14 @@ def home(request):
             category = attempt.exercise.category
             category_colors.setdefault(category.pk, palette[len(category_colors) % len(palette)])
             category_names[category.pk] = category.name
-            attempt_waffle.append({"attempt": attempt, "color": category_colors[category.pk]})
+            score = float(attempt.score)
+            attempt_waffle.append(
+                {
+                    "attempt": attempt,
+                    "category_color": category_colors[category.pk],
+                    "score_percent": f"{score:.0f}%",
+                }
+            )
         attempt_waffle_rows = max(1, isqrt(len(attempt_waffle)))
         category_legend = [
             {"name": category_names[category_id], "color": color}

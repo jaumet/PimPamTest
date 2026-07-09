@@ -429,17 +429,20 @@ fieldset {
 
 .waffle {
   grid-auto-flow: column;
-  grid-template-rows: repeat(var(--waffle-rows), 14px);
-  grid-auto-columns: 14px;
+  grid-template-rows: repeat(var(--waffle-rows), 18px);
+  grid-auto-columns: 18px;
   width: fit-content;
   max-width: 100%;
 }
 
 .waffle span {
-  width: 14px;
-  height: 14px;
-  border-radius: 3px;
-  background: var(--waffle-color);
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--category-color);
+  border-radius: 5px;
+  background:
+    conic-gradient(var(--category-color) var(--score-pct), transparent 0);
+  box-shadow: inset 0 0 0 2px var(--paper);
 }
 
 .star-waffle {
