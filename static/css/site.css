@@ -111,6 +111,45 @@ nav a:hover {
   background: var(--surface);
 }
 
+.sound-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 2.45rem;
+  height: 2.45rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 0;
+  background: var(--paper);
+  color: var(--accent-dark);
+}
+
+.sound-toggle:hover {
+  background: var(--surface);
+}
+
+.sound-icon {
+  width: 1.25rem;
+  height: 1.25rem;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.15;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.sound-toggle .sound-off,
+.sound-toggle.is-muted .sound-on {
+  display: none;
+}
+
+.sound-toggle.is-muted {
+  color: var(--fail);
+}
+
+.sound-toggle.is-muted .sound-off {
+  display: block;
+}
+
 .nav-user {
   font-weight: 800;
   color: var(--accent-dark);
@@ -1821,10 +1860,17 @@ button,
     gap: 0.25rem;
   }
 
-  nav a,
-  .theme-toggle {
-    padding: 0.48rem 0.62rem;
-    font-size: 0.95rem;
+nav a,
+.sound-toggle,
+.theme-toggle {
+  padding: 0.48rem 0.62rem;
+  font-size: 0.95rem;
+}
+
+  .sound-toggle {
+    width: 2.3rem;
+    height: 2.3rem;
+    padding: 0;
   }
 
   .logo-brand img {

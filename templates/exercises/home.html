@@ -225,7 +225,7 @@
         <h1>Pim Pam Test<br><span>fes exercicis i guanya premis PimPams</span></h1>
         <p>Els PimPams son premis que pots guanyar quan fas exercicis. Cada un es diferent i pot tenir d'1 a 5 estrelles.</p>
         <p>Entra amb el teu nom i un numero de 4 xifres per guardar els resultats i els premis que vagis aconseguint.</p>
-        <a class="button-link anonymous-cta" href="{% url 'student_access' %}">Entrar o registrar-me</a>
+        <a class="button-link anonymous-cta" href="{% url 'student_access' %}" data-sound="move">Entrar o registrar-me</a>
       </div>
     </section>
 
@@ -244,7 +244,7 @@
             </div>
             <div class="level-links">
               {% for level in node.levels %}
-                <a href="{{ level.exercises.0.exercise.get_absolute_url }}">
+                <a href="{{ level.exercises.0.exercise.get_absolute_url }}" data-sound="move">
                   <span>Nivell {{ level.level }}</span>
                   <small>{{ level.exercise_count }} exercicis</small>
                 </a>

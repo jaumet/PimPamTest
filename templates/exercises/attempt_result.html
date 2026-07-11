@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<section class="celebration-overlay" data-celebration>
+<section class="celebration-overlay" data-celebration data-result-sound="{% if display_pimpam %}pimpam{% else %}demon{% endif %}">
   <div class="fireworks" aria-hidden="true">
     <span></span>
     <span></span>
@@ -63,13 +63,13 @@
 
 <nav class="result-actions" aria-label="Que vols fer ara">
   {% if next_exercise %}
-    <a class="button-link result-primary-action" href="{{ next_exercise.get_absolute_url }}" autofocus>Fer el seguent proposat</a>
+    <a class="button-link result-primary-action" href="{{ next_exercise.get_absolute_url }}" autofocus data-sound="move">Fer el seguent proposat</a>
   {% endif %}
-  <a class="button-link secondary" href="{{ attempt.exercise.get_absolute_url }}">Repetir l'exercici</a>
+  <a class="button-link secondary" href="{{ attempt.exercise.get_absolute_url }}" data-sound="move">Repetir l'exercici</a>
   {% if attempt.student %}
-    <a class="button-link secondary" href="{% url 'home' %}?tab=pimpams">Veure els teus PimPams</a>
+    <a class="button-link secondary" href="{% url 'home' %}?tab=pimpams" data-sound="move">Veure els teus PimPams</a>
   {% else %}
-    <a class="button-link secondary" href="{% url 'student_access' %}">Entrar per desar resultats</a>
+    <a class="button-link secondary" href="{% url 'student_access' %}" data-sound="move">Entrar per desar resultats</a>
   {% endif %}
 </nav>
 
@@ -106,7 +106,7 @@
 
 <section class="answers-box">
   {% if previous_exercise %}
-    <a class="exercise-arrow previous" href="{{ previous_exercise.get_absolute_url }}" aria-label="Exercici anterior">←</a>
+    <a class="exercise-arrow previous" href="{{ previous_exercise.get_absolute_url }}" aria-label="Exercici anterior" data-sound="move">←</a>
   {% endif %}
   <ol class="answers">
     {% for answer in attempt.answers.all %}
@@ -118,7 +118,7 @@
     {% endfor %}
   </ol>
   {% if result_next_exercise %}
-    <a class="exercise-arrow next" href="{{ result_next_exercise.get_absolute_url }}" aria-label="Exercici seguent">→</a>
+    <a class="exercise-arrow next" href="{{ result_next_exercise.get_absolute_url }}" aria-label="Exercici seguent" data-sound="move">→</a>
   {% endif %}
 </section>
 </div>

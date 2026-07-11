@@ -57,6 +57,18 @@
       {% else %}
         <a href="{% url 'student_access' %}">Entrar</a>
       {% endif %}
+      <button class="sound-toggle" type="button" data-sound-toggle aria-label="Activar o silenciar sons" aria-pressed="false">
+        <svg class="sound-icon sound-on" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 9v6h4l5 4V5L8 9H4z"></path>
+          <path d="M16 8.5a4 4 0 0 1 0 7"></path>
+          <path d="M18.5 6a7 7 0 0 1 0 12"></path>
+        </svg>
+        <svg class="sound-icon sound-off" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 9v6h4l5 4V5L8 9H4z"></path>
+          <path d="M17 9l4 4"></path>
+          <path d="M21 9l-4 4"></path>
+        </svg>
+      </button>
       <button class="theme-toggle" type="button" data-theme-toggle aria-label="Canviar tema">Fosc</button>
     </nav>
   </header>
@@ -89,5 +101,6 @@
       updateButton();
     })();
   </script>
+  <script src="/static/js/sounds.js"></script>
 </body>
 </html>
