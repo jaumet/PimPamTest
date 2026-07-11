@@ -1,4 +1,5 @@
 from decimal import Decimal
+import re
 import unicodedata
 
 from django.core.exceptions import ValidationError
@@ -9,7 +10,18 @@ from django.urls import reverse
 
 def normalize_answer(value):
     value = unicodedata.normalize("NFKD", str(value).strip().casefold())
-    return "".join(char for char in value if not unicodedata.combining(char))
+    value = "".join(char for char in value if not unicodedata.combining(char))
+    value = value.replace("’", "'")
+    value = re.sub(r"(\d)\s*euros?\b", r"\1€", value)
+    value = re.sub(r"\d+[,.]\d+", _normalize_decimal_number, value)
+    value = value.strip(" \t\r\n.,;:!?")
+    return re.sub(r"\s+", "", value)
+
+
+def _normalize_decimal_number(match):
+    whole, decimal = re.split(r"[,.]", match.group(0), maxsplit=1)
+    decimal = decimal.rstrip("0")
+    return whole if not decimal else f"{whole}.{decimal}"
 
 
 class StudentProfile(models.Model):
