@@ -97,6 +97,7 @@
   <section>
     <h2>Resultats</h2>
     {% if student_attempts %}
+      <p class="results-user">Resultats de {{ student.username }}</p>
       <div class="result-visuals">
         <section class="card">
           <div class="metric-heading">
@@ -137,6 +138,16 @@
           </div>
         </section>
       </div>
+      <section class="top-player-banner">
+        {% if top_player %}
+          <span>Usuari amb mes puntuacio</span>
+          <strong>{{ top_player.username }}</strong>
+          <em>{{ top_player.total_stars }} estrelles · {{ top_player.pimpam_count }} PimPams</em>
+        {% else %}
+          <span>Usuari amb mes puntuacio</span>
+          <strong>Encara no hi ha cap PimPam guanyat</strong>
+        {% endif %}
+      </section>
       <ul class="result-list">
         {% for attempt in student_attempts %}
           <li>
@@ -147,6 +158,16 @@
       </ul>
     {% else %}
       <p>Encara no has fet cap exercici.</p>
+      <section class="top-player-banner">
+        {% if top_player %}
+          <span>Usuari amb mes puntuacio</span>
+          <strong>{{ top_player.username }}</strong>
+          <em>{{ top_player.total_stars }} estrelles · {{ top_player.pimpam_count }} PimPams</em>
+        {% else %}
+          <span>Usuari amb mes puntuacio</span>
+          <strong>Encara no hi ha cap PimPam guanyat</strong>
+        {% endif %}
+      </section>
     {% endif %}
   </section>
 {% elif active_tab == 'categories' %}

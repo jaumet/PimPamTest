@@ -7,7 +7,7 @@ import random
 from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db import transaction
-from django.db.models import Count, Prefetch
+from django.db.models import Count, Prefetch, Sum
 from django.forms import modelformset_factory
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_http_methods
@@ -276,6 +276,15 @@ def home(request):
     category_legend = []
     star_waffle = []
     total_pimpams = PimPam.objects.count()
+    top_player = (
+        StudentProfile.objects.annotate(
+            total_stars=Sum("pimpams__pimpam__rarity"),
+            pimpam_count=Count("pimpams"),
+        )
+        .filter(pimpam_count__gt=0)
+        .order_by("-total_stars", "-pimpam_count", "username")
+        .first()
+    )
     if not student:
         pimpam_catalog = [{"pimpam": pimpam} for pimpam in PimPam.objects.all()]
     if student:
@@ -375,6 +384,7 @@ def home(request):
             "student_attempts": student_attempts,
             "star_total": star_total,
             "total_pimpams": total_pimpams,
+            "top_player": top_player,
         },
     )
 

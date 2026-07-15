@@ -458,6 +458,13 @@ fieldset {
   margin-bottom: 1rem;
 }
 
+.results-user {
+  margin: -0.35rem 0 0.85rem;
+  color: var(--accent-dark);
+  font-size: 1.05rem;
+  font-weight: 850;
+}
+
 .metric-heading {
   display: flex;
   align-items: baseline;
@@ -516,6 +523,38 @@ fieldset {
 .average-card {
   display: flex;
   align-items: flex-start;
+}
+
+.top-player-banner {
+  display: grid;
+  grid-template-columns: minmax(170px, 0.72fr) minmax(130px, 0.5fr) minmax(190px, 1fr);
+  gap: 0.75rem;
+  align-items: center;
+  margin: 0 0 1rem;
+  border: 1px solid color-mix(in srgb, var(--accent) 42%, var(--line));
+  border-radius: var(--radius);
+  padding: 0.85rem 1rem;
+  background:
+    linear-gradient(135deg, color-mix(in srgb, #f9a825 24%, transparent), transparent 58%),
+    color-mix(in srgb, var(--accent) 8%, var(--paper));
+  box-shadow: var(--shadow-soft);
+}
+
+.top-player-banner span {
+  color: var(--muted);
+  font-weight: 900;
+}
+
+.top-player-banner strong {
+  color: var(--accent-dark);
+  font-size: 1.25rem;
+  font-weight: 950;
+}
+
+.top-player-banner em {
+  color: var(--ink);
+  font-style: normal;
+  font-weight: 800;
 }
 
 .legend {
@@ -1831,10 +1870,6 @@ button,
     grid-template-columns: 1fr 1fr;
   }
 
-  .average-card {
-    grid-column: 1 / -1;
-  }
-
   .anonymous-layout {
     grid-template-columns: 1fr;
   }
@@ -1897,6 +1932,11 @@ nav a,
 
   .result-visuals {
     grid-template-columns: 1fr;
+  }
+
+  .top-player-banner {
+    grid-template-columns: 1fr;
+    gap: 0.2rem;
   }
 
   .result-list span {

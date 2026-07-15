@@ -12,7 +12,7 @@ class QuestionInline(admin.TabularInline):
 class ExerciseAdmin(admin.ModelAdmin):
     list_display = ["__str__", "category", "level", "kind", "created_at"]
     list_filter = ["category", "level", "kind"]
-    search_fields = ["title", "statement"]
+    search_fields = ["title", "category__name"]
     inlines = [QuestionInline]
 
 
