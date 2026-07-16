@@ -57,6 +57,25 @@ class Category(models.Model):
 
 
 class Exercise(models.Model):
+    LEVEL_COURSES = {
+        0: "PRI 2n-3r",
+        1: "PRI 3r-4t",
+        2: "PRI 4t-5è",
+        3: "PRI 5è-6è",
+    }
+    LEVEL_DESCRIPTIONS = {
+        0: "Reconeixement, resposta literal, una operació o un concepte, vocabulari explicat",
+        1: "Aplicació senzilla, relacions, dos passos, comparació o inferència curta",
+        2: "Diversos passos, informació implícita, justificació, conversions i classificacions",
+        3: "Raonament autònom, estratègies alternatives, dades sobreres o problemes oberts",
+    }
+    LEVEL_CHOICES = (
+        (0, "Nivell 0 · PRI 2n-3r"),
+        (1, "Nivell 1 · PRI 3r-4t"),
+        (2, "Nivell 2 · PRI 4t-5è"),
+        (3, "Nivell 3 · PRI 5è-6è"),
+    )
+
     class ExerciseKind(models.TextChoices):
         OPEN_THREE = "open_three", "3 preguntes obertes"
         MULTIPLE_CHOICE = "multiple_choice", "Preguntes tipus test"
@@ -65,7 +84,7 @@ class Exercise(models.Model):
     statement = models.TextField("enunciat")
     image = models.URLField("imatge", max_length=500, blank=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name="exercises")
-    level = models.PositiveSmallIntegerField("nivell", default=1)
+    level = models.PositiveSmallIntegerField("nivell", choices=LEVEL_CHOICES, default=1)
     kind = models.CharField("tipus", max_length=30, choices=ExerciseKind.choices)
     feedback = models.TextField("comentari", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -81,6 +100,17 @@ class Exercise(models.Model):
 
     def get_absolute_url(self):
         return reverse("exercise_detail", kwargs={"pk": self.pk})
+
+    @classmethod
+    def level_display(cls, level):
+        courses = cls.LEVEL_COURSES.get(level)
+        if courses:
+            return f"Nivell {level} · {courses}"
+        return f"Nivell {level}"
+
+    @property
+    def level_label(self):
+        return self.level_display(self.level)
 
 
 class Question(models.Model):

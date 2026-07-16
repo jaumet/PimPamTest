@@ -89,6 +89,10 @@ Valors admesos:
 
 - `kind` d'exercici: `open_three` o `multiple_choice`.
 - `level`: nivell numeric de l'exercici. Si no s'indica, es desa com a `1`.
+  - `0`: PRI 2n-3r. Reconeixement, resposta literal, una operació o un concepte, vocabulari explicat.
+  - `1`: PRI 3r-4t. Aplicació senzilla, relacions, dos passos, comparació o inferència curta.
+  - `2`: PRI 4t-5è. Diversos passos, informació implícita, justificació, conversions i classificacions.
+  - `3`: PRI 5è-6è. Raonament autònom, estratègies alternatives, dades sobreres o problemes oberts.
 - `image`: opcional. Si s'indica, la imatge es mostra sota l'enunciat destacat.
 - `kind` de pregunta: `open` o `multiple_choice`.
 - `correct_answers` sempre es una array. En preguntes obertes pot contenir mes d'una resposta valida.

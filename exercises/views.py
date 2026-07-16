@@ -120,11 +120,15 @@ def summarize_import_payload(payload):
                 "title": item.get("title") or "Exercici sense titol",
                 "category": category_name,
                 "level": level,
+                "level_label": Exercise.level_display(level),
                 "question_count": len(questions),
             }
         )
     summary["categories"] = sorted(summary["categories"].items())
-    summary["levels"] = sorted(summary["levels"].items())
+    summary["levels"] = [
+        {"level": level, "label": Exercise.level_display(level), "count": count}
+        for level, count in sorted(summary["levels"].items())
+    ]
     return summary
 
 
@@ -239,6 +243,7 @@ def home(request):
                 "levels": [
                     {
                         "level": level,
+                        "level_label": Exercise.level_display(level),
                         "exercise_count": len(exercises),
                         "done_count": sum(1 for exercise_node in exercises if exercise_node["done_count"]),
                         "exercises": exercises,
@@ -254,6 +259,7 @@ def home(request):
             "levels": [
                 {
                     "level": level["level"],
+                    "level_label": level["level_label"],
                     "exercise_count": level["exercise_count"],
                     "value": f"{node['category'].pk}:{level['level']}",
                     "selected": f"{node['category'].pk}:{level['level']}" in selected_content_values,

@@ -20,15 +20,15 @@
 
     <h3>Nivells</h3>
     <ul>
-      {% for level, count in preview.levels %}
-        <li>Nivell {{ level }}: {{ count }} exercicis</li>
+      {% for level in preview.levels %}
+        <li>{{ level.label }}: {{ level.count }} exercicis</li>
       {% endfor %}
     </ul>
 
     <h3>Exercicis</h3>
     <ul>
       {% for exercise in preview.exercises %}
-        <li>{{ exercise.title }} · {{ exercise.category }} · nivell {{ exercise.level }} · {{ exercise.question_count }} preguntes</li>
+        <li>{{ exercise.title }} · {{ exercise.category }} · {{ exercise.level_label }} · {{ exercise.question_count }} preguntes</li>
       {% endfor %}
     </ul>
 

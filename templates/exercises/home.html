@@ -63,7 +63,7 @@
               {% for level in node.levels %}
                 <label>
                   <input type="checkbox" name="content" value="{{ level.value }}" {% if level.selected %}checked{% endif %}>
-                  Nivell {{ level.level }} ({{ level.exercise_count }})
+                  {{ level.level_label }} ({{ level.exercise_count }})
                 </label>
               {% endfor %}
             </div>
@@ -86,7 +86,7 @@
       {% for exercise in recommended_exercises %}
         <article class="card">
           <h3><a href="{{ exercise.get_absolute_url }}">{{ exercise.title|default:"Exercici sense titol" }}</a></h3>
-          <p>{{ exercise.category.name }} · nivell {{ exercise.level }}</p>
+          <p>{{ exercise.category.name }} · {{ exercise.level_label }}</p>
         </article>
       {% empty %}
         <p>Encara no hi ha exercicis.</p>
@@ -179,7 +179,7 @@
         <p>{{ node.category.description|default:"Sense descripcio." }}</p>
         {% for level in node.levels %}
           <details class="drawer level">
-            <summary>Nivell {{ level.level }} ({{ level.exercise_count }}, fets {{ level.done_count }})</summary>
+            <summary>{{ level.level_label }} ({{ level.exercise_count }}, fets {{ level.done_count }})</summary>
             <ul>
               {% for exercise_node in level.exercises %}
                 <li>
@@ -266,7 +266,7 @@
             <div class="level-links">
               {% for level in node.levels %}
                 <a href="{{ level.exercises.0.exercise.get_absolute_url }}" data-sound="move">
-                  <span>Nivell {{ level.level }}</span>
+                  <span>{{ level.level_label }}</span>
                   <small>{{ level.exercise_count }} exercicis</small>
                 </a>
               {% endfor %}

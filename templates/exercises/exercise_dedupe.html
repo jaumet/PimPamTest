@@ -30,7 +30,7 @@
           Conserva #{{ group.keep.pk }} · {{ group.keep.title|default:"Exercici sense titol" }}
           (elimina {{ group.duplicate_count }})
         </summary>
-        <p>{{ group.keep.category.name }} · nivell {{ group.keep.level }}</p>
+        <p>{{ group.keep.category.name }} · {{ group.keep.level_label }}</p>
         {% if group.has_different_content %}
           <p><strong>Atencio:</strong> aquests exercicis tenen el mateix titol, pero el contingut no es identic.</p>
         {% endif %}

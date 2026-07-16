@@ -10,10 +10,14 @@ class QuestionInline(admin.TabularInline):
 
 @admin.register(Exercise)
 class ExerciseAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "category", "level", "kind", "created_at"]
+    list_display = ["__str__", "category", "level_display", "kind", "created_at"]
     list_filter = ["category", "level", "kind"]
     search_fields = ["title", "category__name"]
     inlines = [QuestionInline]
+
+    @admin.display(description="nivell", ordering="level")
+    def level_display(self, obj):
+        return obj.level_label
 
 
 @admin.register(Category)

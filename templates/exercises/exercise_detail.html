@@ -2,7 +2,7 @@
 
 {% block content %}
 <h1>{{ exercise.title|default:"Exercici" }}</h1>
-<p class="meta">Categoria: {{ exercise.category.name }} · nivell {{ exercise.level }}</p>
+<p class="meta">Categoria: {{ exercise.category.name }} · {{ exercise.level_label }}</p>
 {% if instruction_text %}
   <p class="exercise-instruction">{{ instruction_text }}</p>
 {% endif %}
