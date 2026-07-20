@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="220" viewBox="0 0 500 220" role="img" aria-label="Rellotge digital que mostra 12:30">
+<rect width="500" height="220" rx="36" fill="#0d0e37"/>
+<rect x="18" y="18" width="464" height="184" rx="24" fill="#111827" stroke="#219ebc" stroke-width="5"/>
+<text x="250.0" y="146.72" text-anchor="middle" font-family="DejaVu Sans Mono, monospace" font-size="108" font-weight="700" letter-spacing="4" fill="#f8fafc">12:30</text>
+</svg>
