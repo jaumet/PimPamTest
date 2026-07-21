@@ -8,11 +8,17 @@
 {% endif %}
 <section class="statement-box">
   {% if previous_exercise %}
-    <a class="exercise-arrow previous" href="{{ previous_exercise.get_absolute_url }}" aria-label="Exercici anterior" data-sound="move">←</a>
+    <a class="exercise-arrow previous" href="{{ previous_exercise.get_absolute_url }}" aria-label="Exercici anterior" data-sound="move">
+      <span class="arrow-symbol">←</span>
+      <span>Anterior</span>
+    </a>
   {% endif %}
   <p class="statement">{{ statement_text }}</p>
   {% if next_exercise %}
-    <a class="exercise-arrow next" href="{{ next_exercise.get_absolute_url }}" aria-label="Exercici seguent" data-sound="move">→</a>
+    <a class="exercise-arrow next" href="{{ next_exercise.get_absolute_url }}" aria-label="Exercici seguent" data-sound="move">
+      <span>Seguent</span>
+      <span class="arrow-symbol">→</span>
+    </a>
   {% endif %}
 </section>
 {% if exercise.image %}

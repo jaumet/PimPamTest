@@ -63,7 +63,9 @@
 
 <nav class="result-actions" aria-label="Que vols fer ara">
   {% if next_exercise %}
-    <a class="button-link result-primary-action" href="{{ next_exercise.get_absolute_url }}" autofocus data-sound="move">Fer el seguent proposat</a>
+    <a class="button-link result-primary-action" href="{{ next_exercise.get_absolute_url }}" autofocus data-sound="move">
+      Seguent exercici proposat <span>→</span>
+    </a>
   {% endif %}
   <a class="button-link secondary" href="{{ attempt.exercise.get_absolute_url }}" data-sound="move">Repetir l'exercici</a>
   {% if attempt.student %}
@@ -106,7 +108,10 @@
 
 <section class="answers-box">
   {% if previous_exercise %}
-    <a class="exercise-arrow previous" href="{{ previous_exercise.get_absolute_url }}" aria-label="Exercici anterior" data-sound="move">←</a>
+    <a class="exercise-arrow previous" href="{{ previous_exercise.get_absolute_url }}" aria-label="Exercici anterior" data-sound="move">
+      <span class="arrow-symbol">←</span>
+      <span>Anterior</span>
+    </a>
   {% endif %}
   <ol class="answers">
     {% for answer in attempt.answers.all %}
@@ -118,7 +123,10 @@
     {% endfor %}
   </ol>
   {% if result_next_exercise %}
-    <a class="exercise-arrow next" href="{{ result_next_exercise.get_absolute_url }}" aria-label="Exercici seguent" data-sound="move">→</a>
+    <a class="exercise-arrow next" href="{{ result_next_exercise.get_absolute_url }}" aria-label="Exercici seguent" data-sound="move">
+      <span>Seguent</span>
+      <span class="arrow-symbol">→</span>
+    </a>
   {% endif %}
 </section>
 </div>
