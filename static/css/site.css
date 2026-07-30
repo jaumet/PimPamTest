@@ -236,10 +236,15 @@ nav a:hover {
   display: flex;
   grid-column: 1 / -1;
   gap: 0.45rem;
-  flex-wrap: wrap;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.1rem 0 0.35rem;
+  scrollbar-gutter: stable;
 }
 
 .mini-pimpam {
+  flex: 0 0 auto;
   display: inline-grid;
   place-items: center;
   width: 52px;
