@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PimPamTest</title>
-  <meta name="description" content="Pim Pam Test: exercicis per a estudiants amb premis PimPams per aprendre jugant.">
+  <title>{% block title %}PimPamTest · Exercicis educatius sense registre{% endblock %}</title>
+  <meta name="description" content="{% block meta_description %}PimPamTest ofereix exercicis educatius per practicar de seguida, sense registre. Identifica't només si vols desar el progrés, resultats i PimPams.{% endblock %}">
   <meta name="application-name" content="PimPamTest">
   <meta name="apple-mobile-web-app-title" content="PimPamTest">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -19,8 +19,8 @@
   <link rel="manifest" href="/static/site.webmanifest">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="PimPamTest">
-  <meta property="og:title" content="Pim Pam Test">
-  <meta property="og:description" content="Fes exercicis i guanya premis PimPams.">
+  <meta property="og:title" content="{% block og_title %}PimPamTest · Exercicis educatius sense registre{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}Practica exercicis educatius de seguida. Sense registre per començar; identificació opcional per desar progrés, resultats i PimPams.{% endblock %}">
   <meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ request.path }}">
   <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}/static/img/pimpamtest_logo_horizontal_fons_fosc.png">
   <meta property="og:image:width" content="1600">
@@ -28,8 +28,8 @@
   <meta property="og:image:alt" content="Logo de PimPamTest">
   <meta property="og:locale" content="ca_ES">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Pim Pam Test">
-  <meta name="twitter:description" content="Fes exercicis i guanya premis PimPams.">
+  <meta name="twitter:title" content="{% block twitter_title %}PimPamTest · Exercicis educatius sense registre{% endblock %}">
+  <meta name="twitter:description" content="{% block twitter_description %}Practica exercicis educatius de seguida. Identifica't opcionalment per desar progrés, resultats i PimPams.{% endblock %}">
   <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}/static/img/pimpamtest_logo_horizontal_fons_fosc.png">
   <script>
     (function () {

@@ -239,65 +239,97 @@
 {% endif %}
 
 {% else %}
-<div class="anonymous-layout">
-  <div>
-    <section class="anonymous-hero">
-      <div>
-        <h1>Pim Pam Test<br><span>fes exercicis i guanya premis PimPams</span></h1>
-        <p>Els PimPams son premis que pots guanyar quan fas exercicis. Cada un es diferent i pot tenir d'1 a 5 estrelles.</p>
-        <p>Entra amb el teu nom i un numero de 4 xifres per guardar els resultats i els premis que vagis aconseguint.</p>
-        <a class="button-link anonymous-cta" href="{% url 'student_access' %}" data-sound="move">Entrar o registrar-me</a>
-      </div>
-    </section>
-
-    <section class="try-exercises">
-      <div class="section-heading">
-        <p>Prova de fer exercicis</p>
-        <h2>Tria categoria i nivell</h2>
-      </div>
-      <p class="try-copy">Pots començar sense entrar. Si vols guardar resultats i PimPams, entra abans amb el teu nom.</p>
-      <div class="category-choice-grid">
-        {% for node in category_tree %}
-          <article class="category-choice">
-            <div>
-              <h3>{{ node.category.name }}</h3>
-              <p>{{ node.exercise_count }} exercicis</p>
-            </div>
-            <div class="level-links">
-              {% for level in node.levels %}
-                <a href="{{ level.exercises.0.exercise.get_absolute_url }}" data-sound="move">
-                  <span>{{ level.level_label }}</span>
-                  <small>{{ level.exercise_count }} exercicis</small>
-                </a>
-              {% endfor %}
-            </div>
-          </article>
-        {% empty %}
-          <p>Encara no hi ha categories.</p>
-        {% endfor %}
-      </div>
-    </section>
+<section class="landing-hero" aria-labelledby="landing-title">
+  <div class="landing-hero-copy">
+    <p class="landing-kicker">Exercicis educatius per practicar ara mateix</p>
+    <h1 id="landing-title">Pim Pam Test</h1>
+    <p class="landing-subtitle">Tria una categoria, respon preguntes i veu el resultat al moment. Pots començar sense crear cap usuari.</p>
+    <div class="landing-actions">
+      <a class="button-link landing-primary" href="#practice-categories" data-sound="move">Comença a practicar</a>
+      <a class="button-link secondary landing-secondary" href="{% url 'student_access' %}" data-sound="move">Identifica't i desa el teu progrés</a>
+    </div>
+    <p class="no-register-note">Pots començar sense registre</p>
   </div>
-
-  <aside class="catalog-preview">
-    <h2>Cataleg de PimPams</h2>
-    <p>Aquests son alguns dels premis que pots aconseguir fent exercicis.</p>
-    <div class="pimpam-catalog-grid">
-      {% for item in pimpam_catalog %}
-        <article class="pimpam-card rarity-{{ item.pimpam.rarity }}" style="{{ item.pimpam.visual_style }}">
-          <div class="pimpam-creature {{ item.pimpam.visual_class }}">
+  <aside class="landing-prize-panel" aria-labelledby="landing-prize-title">
+    <h2 id="landing-prize-title">Guanya PimPams</h2>
+    <p>Els PimPams són premis de colors que apareixen quan fas exercicis. Si t'identifiques, els pots conservar.</p>
+    <div class="landing-pimpams" aria-hidden="true">
+      {% for item in pimpam_catalog|slice:":5" %}
+        <span class="mini-pimpam rarity-{{ item.pimpam.rarity }}" style="{{ item.pimpam.visual_style }}">
+          <span class="pimpam-creature {{ item.pimpam.visual_class }}">
             <span class="ear left"></span><span class="ear right"></span><span class="tail"></span>
             <span class="wing left"></span><span class="wing right"></span><span class="horn"></span>
             <span class="fin"></span><span class="belly"></span><span class="eye left"></span>
             <span class="eye right"></span><span class="nose"></span><span class="mark"></span>
             <span class="initial">{{ item.pimpam.initial }}</span>
-          </div>
-          <h3>{{ item.pimpam.name }}</h3>
-          <span class="rarity-badge">{{ item.pimpam.rarity }} ★</span>
-        </article>
+          </span>
+        </span>
       {% endfor %}
     </div>
   </aside>
-</div>
+</section>
+
+<section class="landing-section" id="practice-categories" aria-labelledby="practice-title">
+  <div class="section-heading">
+    <p>Comença per aquí</p>
+    <h2 id="practice-title">Tria una categoria i nivell</h2>
+  </div>
+  <p class="try-copy">Els exercicis s'obren directament. La identificació només serveix per recordar el progrés, resultats i PimPams.</p>
+  <div class="landing-category-grid">
+    {% for node in category_tree %}
+      <article class="landing-category-card">
+        <div class="category-icon" aria-hidden="true">{{ node.category.name|slice:":1" }}</div>
+        <div class="landing-category-copy">
+          <h3>{{ node.category.name }}</h3>
+          <p>{{ node.category.description|default:"Practica exercicis d'aquesta categoria." }}</p>
+          <span>{{ node.exercise_count }} exercicis disponibles</span>
+        </div>
+        <div class="level-links landing-level-links" aria-label="Nivells de {{ node.category.name }}">
+          {% for level in node.levels %}
+            <a href="{{ level.exercises.0.exercise.get_absolute_url }}" data-sound="move">
+              <span>{{ level.level_label }}</span>
+              <small>{{ level.exercise_count }} exercicis</small>
+            </a>
+          {% endfor %}
+        </div>
+      </article>
+    {% empty %}
+      <p>Encara no hi ha categories amb exercicis.</p>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="landing-section landing-split" aria-labelledby="how-title">
+  <div>
+    <div class="section-heading">
+      <p>Com funciona</p>
+      <h2 id="how-title">Tres passos senzills</h2>
+    </div>
+    <ol class="steps-list">
+      <li><strong>Tria</strong><span>Escull una categoria o un nivell.</span></li>
+      <li><strong>Respon</strong><span>Fes l'exercici i rep correcció al moment.</span></li>
+      <li><strong>Desa</strong><span>Identifica't només si vols conservar progrés i estadístiques.</span></li>
+    </ol>
+  </div>
+  <div class="optional-login-card">
+    <h2>Identificar-se ajuda a...</h2>
+    <ul>
+      <li>Continuar on ho vas deixar.</li>
+      <li>Consultar els exercicis realitzats.</li>
+      <li>Veure la teva evolució.</li>
+      <li>Conservar PimPams i premis.</li>
+    </ul>
+    <a class="button-link secondary" href="{% url 'student_access' %}" data-sound="move">Identifica't o crea usuari</a>
+  </div>
+</section>
+
+<section class="landing-section family-teacher-note" aria-labelledby="families-title">
+  <div class="section-heading">
+    <p>Famílies i docents</p>
+    <h2 id="families-title">Practica continguts i detecta què cal repassar</h2>
+  </div>
+  <p>PimPamTest pot ajudar a consolidar continguts de primària i secundària amb exercicis curts, resultats immediats i una progressió visual pensada per mantenir l'interès.</p>
+  <a class="button-link landing-primary" href="#practice-categories" data-sound="move">Veure categories</a>
+</section>
 {% endif %}
 {% endblock %}
