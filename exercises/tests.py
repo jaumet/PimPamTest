@@ -77,6 +77,8 @@ class LoggedInHomeTests(TestCase):
 
         self.assertContains(response, "Preguntes")
         self.assertContains(response, "Historial")
+        self.assertContains(response, "landing-category-card")
+        self.assertContains(response, "Veure preguntes")
         self.assertNotContains(response, "Exercicis per fer")
 
     def test_history_tab_lists_attempts(self):

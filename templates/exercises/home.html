@@ -164,35 +164,51 @@
     {% endif %}
   </section>
 {% elif active_tab == 'categories' %}
-  <section>
-    <h2>Preguntes</h2>
-    {% for node in category_tree %}
-      <details class="drawer">
-        <summary>{{ node.category.name }} ({{ node.exercise_count }}, fets {{ node.done_count }})</summary>
-        <p>{{ node.category.description|default:"Sense descripcio." }}</p>
-        {% for level in node.levels %}
-          <details class="drawer level">
-            <summary>{{ level.level_label }} ({{ level.exercise_count }}, fets {{ level.done_count }})</summary>
+  <section class="landing-section logged-question-section" aria-labelledby="logged-questions-title">
+    <div class="section-heading">
+      <p>Tria què vols practicar</p>
+      <h2 id="logged-questions-title">Preguntes</h2>
+    </div>
+    <p class="try-copy">Escull una categoria i un nivell. Els exercicis que ja has fet queden marcats dins de cada grup.</p>
+    <div class="landing-category-grid">
+      {% for node in category_tree %}
+        <article class="landing-category-card">
+          <div class="category-icon" aria-hidden="true">{{ node.category.name|slice:":1" }}</div>
+          <div class="landing-category-copy">
+            <h3>{{ node.category.name }}</h3>
+            <p>{{ node.category.description|default:"Practica exercicis d'aquesta categoria." }}</p>
+            <span>{{ node.exercise_count }} exercicis · {{ node.done_count }} fets</span>
+          </div>
+          <div class="level-links landing-level-links" aria-label="Nivells de {{ node.category.name }}">
+            {% for level in node.levels %}
+              <a href="{{ level.exercises.0.exercise.get_absolute_url }}" data-sound="move">
+                <span>{{ level.level_label }}</span>
+                <small>{{ level.exercise_count }} exercicis · {{ level.done_count }} fets</small>
+              </a>
+            {% endfor %}
+          </div>
+          <details class="question-card-details">
+            <summary>Veure preguntes</summary>
             <ul>
-              {% for exercise_node in level.exercises %}
-                <li>
-                  <a href="{{ exercise_node.exercise.get_absolute_url }}">{{ exercise_node.exercise.title|default:"Exercici sense titol" }}</a>
-                  {% if exercise_node.done_count == 1 %}
-                    <span class="status-done">fet</span>
-                  {% elif exercise_node.done_count > 1 %}
-                    <span class="status-done">fet {{ exercise_node.done_count }} vegades</span>
-                  {% endif %}
-                </li>
+              {% for level in node.levels %}
+                {% for exercise_node in level.exercises %}
+                  <li>
+                    <a href="{{ exercise_node.exercise.get_absolute_url }}">{{ exercise_node.exercise.title|default:"Exercici sense titol" }}</a>
+                    {% if exercise_node.done_count == 1 %}
+                      <span class="status-done">fet</span>
+                    {% elif exercise_node.done_count > 1 %}
+                      <span class="status-done">fet {{ exercise_node.done_count }} vegades</span>
+                    {% endif %}
+                  </li>
+                {% endfor %}
               {% endfor %}
             </ul>
           </details>
-        {% empty %}
-          <p>Encara no hi ha exercicis.</p>
-        {% endfor %}
-      </details>
-    {% empty %}
-      <p>Encara no hi ha categories.</p>
-    {% endfor %}
+        </article>
+      {% empty %}
+        <p>Encara no hi ha categories.</p>
+      {% endfor %}
+    </div>
   </section>
 {% elif active_tab == 'pimpams' %}
   <section>
