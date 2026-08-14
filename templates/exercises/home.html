@@ -13,85 +13,78 @@
   <aside class="hero-pimpams">
     <h2>PimPams acumulats</h2>
     {% if collection_count %}
-      <ul>
+      <ul class="pimpam-compact-list" aria-label="Resum de PimPams acumulats">
         {% for row in pimpam_summary %}
-          <li class="rarity-line rarity-text-{{ row.rarity }}">
-            <span>{{ row.rarity }} estrelles</span>
-            <strong>{{ row.owned_count }}</strong>
-            {% if row.pimpams %}
-              <div class="mini-pimpams">
-                {% for pimpam in row.pimpams %}
-                  <span class="mini-pimpam rarity-{{ pimpam.rarity }}" style="{{ pimpam.visual_style }}" title="{{ pimpam.name }}">
-                    <span class="pimpam-creature {{ pimpam.visual_class }}">
-                      <span class="ear left"></span><span class="ear right"></span><span class="tail"></span>
-                      <span class="wing left"></span><span class="wing right"></span><span class="horn"></span>
-                      <span class="fin"></span><span class="belly"></span><span class="eye left"></span>
-                      <span class="eye right"></span><span class="nose"></span><span class="mark"></span>
-                      <span class="initial">{{ pimpam.initial }}</span>
-                    </span>
-                  </span>
-                {% endfor %}
-              </div>
-            {% endif %}
+          <li class="pimpam-compact-item rarity-text-{{ row.rarity }}" aria-label="{{ row.rarity }} estrelles: {{ row.owned_count }} PimPams">
+            <span aria-hidden="true">★</span>
+            <strong>{{ row.rarity }}</strong>
+            <em>{{ row.owned_count }}</em>
           </li>
         {% endfor %}
       </ul>
+      <a class="button-link secondary pimpam-summary-link" href="?tab=pimpams">Veure els PimPams</a>
     {% else %}
       <p>Encara no tens PimPams. En pots guanyar fent exercicis: quan acabes un exercici, reps un PimPam.</p>
+      <a class="button-link secondary pimpam-summary-link" href="?tab=pimpams">Veure el cataleg</a>
     {% endif %}
   </aside>
 </section>
 
 <nav class="tabs" aria-label="Seccions de portada">
-  <a class="{% if active_tab == 'exercises' %}active{% endif %}" href="?tab=exercises">Exercicis per fer</a>
+  <a class="{% if active_tab == 'categories' %}active{% endif %}" href="?tab=categories">Preguntes</a>
   <a class="{% if active_tab == 'results' %}active{% endif %}" href="?tab=results">Resultats</a>
-  <a class="{% if active_tab == 'categories' %}active{% endif %}" href="?tab=categories">Categories</a>
+  <a class="{% if active_tab == 'exercises' %}active{% endif %}" href="?tab=exercises">Historial</a>
   <a class="{% if active_tab == 'pimpams' %}active{% endif %}" href="?tab=pimpams">PimPams</a>
 </nav>
 
 {% if active_tab == 'exercises' %}
   <section>
-    <h2>Exercicis per fer</h2>
-    <details class="content-selector">
-      <summary>Selecciona continguts</summary>
-      <form method="get" class="content-selector-form">
-        <input type="hidden" name="tab" value="exercises">
-        {% for node in content_selector %}
-          <fieldset>
-            <legend>{{ node.category.name }}</legend>
-            <div class="content-options">
-              {% for level in node.levels %}
-                <label>
-                  <input type="checkbox" name="content" value="{{ level.value }}" {% if level.selected %}checked{% endif %}>
-                  {{ level.level_label }} ({{ level.exercise_count }})
-                </label>
-              {% endfor %}
-            </div>
-          </fieldset>
-        {% endfor %}
-        <div class="content-actions">
-          <button type="submit">Aplicar seleccio</button>
-          {% if has_content_selection %}
-            <a class="button-link secondary" href="?tab=exercises">Veure proposta general</a>
+    <h2>Historial</h2>
+    {% if history_page and history_page.object_list %}
+      <div class="history-table-wrap">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Categoria</th>
+              <th>Nivell</th>
+              <th>Pregunta</th>
+              <th>Vegades feta</th>
+              <th>PimPam</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in history_page.object_list %}
+              <tr>
+                <td>{{ row.category.name }}</td>
+                <td>{{ row.level_label }}</td>
+                <td><a href="{{ row.exercise.get_absolute_url }}">{{ row.exercise.title|default:"Exercici sense titol" }}</a></td>
+                <td>{{ row.done_count }}</td>
+                <td>
+                  {% if row.pimpam %}
+                    <span class="history-pimpam">{{ row.pimpam.name }} · {{ row.pimpam.rarity }} ★</span>
+                  {% else %}
+                    <span class="muted">-</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% if history_page.has_other_pages %}
+        <nav class="pagination" aria-label="Paginacio de l'historial">
+          {% if history_page.has_previous %}
+            <a class="button-link secondary" href="?tab=exercises&page={{ history_page.previous_page_number }}">Anterior</a>
           {% endif %}
-        </div>
-      </form>
-    </details>
-    {% if has_content_selection %}
-      <p class="selection-note">Proposta feta a partir dels continguts seleccionats.</p>
+          <span>Pagina {{ history_page.number }} de {{ history_page.paginator.num_pages }}</span>
+          {% if history_page.has_next %}
+            <a class="button-link secondary" href="?tab=exercises&page={{ history_page.next_page_number }}">Seguent</a>
+          {% endif %}
+        </nav>
+      {% endif %}
     {% else %}
-      <p class="selection-note">Proposta general. Pots triar continguts concrets si vols practicar una categoria i nivell.</p>
+      <p>Encara no has fet cap exercici.</p>
     {% endif %}
-    <div class="grid">
-      {% for exercise in recommended_exercises %}
-        <article class="card">
-          <h3><a href="{{ exercise.get_absolute_url }}">{{ exercise.title|default:"Exercici sense titol" }}</a></h3>
-          <p>{{ exercise.category.name }} · {{ exercise.level_label }}</p>
-        </article>
-      {% empty %}
-        <p>Encara no hi ha exercicis.</p>
-      {% endfor %}
-    </div>
   </section>
 {% elif active_tab == 'results' %}
   <section>
@@ -172,7 +165,7 @@
   </section>
 {% elif active_tab == 'categories' %}
   <section>
-    <h2>Categories</h2>
+    <h2>Preguntes</h2>
     {% for node in category_tree %}
       <details class="drawer">
         <summary>{{ node.category.name }} ({{ node.exercise_count }}, fets {{ node.done_count }})</summary>

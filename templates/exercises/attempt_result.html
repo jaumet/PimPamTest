@@ -68,43 +68,10 @@
     </a>
   {% endif %}
   <a class="button-link secondary" href="{{ attempt.exercise.get_absolute_url }}" data-sound="move">Repetir l'exercici</a>
-  {% if attempt.student %}
-    <a class="button-link secondary" href="{% url 'home' %}?tab=pimpams" data-sound="move">Veure els teus PimPams</a>
-  {% else %}
+  {% if not attempt.student %}
     <a class="button-link secondary" href="{% url 'student_access' %}" data-sound="move">Entrar per desar resultats</a>
   {% endif %}
 </nav>
-
-{% if display_pimpam %}
-  <section class="award">
-    <h2>{% if is_saved_award %}Has guanyat un PimPam!{% else %}PimPam de mostra{% endif %}</h2>
-    <article class="pimpam-card rarity-{{ display_pimpam.rarity }}" style="{{ display_pimpam.visual_style }}">
-      <div class="pimpam-creature {{ display_pimpam.visual_class }}">
-        <span class="ear left"></span>
-        <span class="ear right"></span>
-        <span class="tail"></span>
-        <span class="wing left"></span>
-        <span class="wing right"></span>
-        <span class="horn"></span>
-        <span class="fin"></span>
-        <span class="belly"></span>
-        <span class="eye left"></span>
-        <span class="eye right"></span>
-        <span class="nose"></span>
-        <span class="mark"></span>
-        <span class="initial">{{ display_pimpam.initial }}</span>
-      </div>
-      <div>
-        <h3>{{ display_pimpam.name }}</h3>
-        <p>{{ display_pimpam.animal }} · {{ display_pimpam.star_label }}</p>
-        <p>{{ display_pimpam.description }}</p>
-        {% if not is_saved_award %}
-          <p class="meta">Aquest PimPam no s'ha desat. Entra amb usuari per guardar els premis.</p>
-        {% endif %}
-      </div>
-    </article>
-  </section>
-{% endif %}
 
 <section class="answers-box">
   {% if previous_exercise %}

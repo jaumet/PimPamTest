@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.contrib.admin.views.decorators import staff_member_required
 from django.db import transaction
 from django.db.models import Count, Prefetch, Sum
+from django.core.paginator import Paginator
 from django.forms import modelformset_factory
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_http_methods
@@ -204,9 +205,11 @@ def home(request):
     selected_groups = parse_selected_content(selected_content_values)
     done_counts = {}
     student_attempts = []
+    history_page = None
     if student:
         student_attempts = list(
-            Attempt.objects.filter(student=student).select_related("exercise", "exercise__category")
+            Attempt.objects.filter(student=student)
+            .select_related("exercise", "exercise__category", "pimpam_award__pimpam")
         )
         done_counts = dict(
             Attempt.objects.filter(student=student)
@@ -294,7 +297,18 @@ def home(request):
     if not student:
         pimpam_catalog = [{"pimpam": pimpam} for pimpam in PimPam.objects.all()]
     if student:
-        recommended_exercises = recommended_exercises_for_student(student, selected_groups=selected_groups)
+        history_rows = [
+            {
+                "attempt": attempt,
+                "category": attempt.exercise.category,
+                "level_label": attempt.exercise.level_label,
+                "exercise": attempt.exercise,
+                "done_count": done_counts.get(attempt.exercise_id, 0),
+                "pimpam": getattr(getattr(attempt, "pimpam_award", None), "pimpam", None),
+            }
+            for attempt in student_attempts
+        ]
+        history_page = Paginator(history_rows, 20).get_page(request.GET.get("page"))
 
         category_colors = {}
         category_names = {}
@@ -363,7 +377,7 @@ def home(request):
             )
         pimpam_catalog.sort(key=lambda item: (not item["is_owned"], item["pimpam"].rarity, item["pimpam"].name))
 
-    default_tab = "exercises" if student else "pimpams"
+    default_tab = "categories" if student else "pimpams"
     allowed_tabs = {"exercises", "results", "categories", "pimpams"} if student else {"pimpams", "categories"}
     active_tab = request.GET.get("tab", default_tab)
     if active_tab not in allowed_tabs:
@@ -385,6 +399,7 @@ def home(request):
             "recommended_exercises": recommended_exercises,
             "content_selector": content_selector,
             "has_content_selection": bool(selected_groups),
+            "history_page": history_page,
             "star_waffle": star_waffle,
             "student": student,
             "student_attempts": student_attempts,
