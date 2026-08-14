@@ -11,82 +11,48 @@
     <p>Tria una categoria i comenca a practicar.</p>
   </div>
   <aside class="hero-pimpams">
-    <h2>PimPams acumulats</h2>
+    <h2>PimPams guanyats</h2>
     {% if collection_count %}
       <ul class="pimpam-compact-list" aria-label="Resum de PimPams acumulats">
         {% for row in pimpam_summary %}
-          <li class="pimpam-compact-item rarity-text-{{ row.rarity }}" aria-label="{{ row.rarity }} estrelles: {{ row.owned_count }} PimPams">
-            <span aria-hidden="true">★</span>
-            <strong>{{ row.rarity }}</strong>
-            <em>{{ row.owned_count }}</em>
+          <li class="pimpam-compact-item rarity-text-{{ row.rarity }}" aria-label="{{ row.owned_count }} PimPams de {{ row.rarity }} estrelles">
+            <div class="pimpam-count-copy">
+              <strong>{{ row.owned_count }}</strong>
+              <span>de {{ row.rarity }} ★</span>
+            </div>
+            {% if row.pimpams %}
+              <div class="pimpam-count-samples" aria-hidden="true">
+                {% for pimpam in row.pimpams|slice:":3" %}
+                  <span class="mini-pimpam rarity-{{ pimpam.rarity }}" style="{{ pimpam.visual_style }}" title="{{ pimpam.name }}">
+                    <span class="pimpam-creature {{ pimpam.visual_class }}">
+                      <span class="ear left"></span><span class="ear right"></span><span class="tail"></span>
+                      <span class="wing left"></span><span class="wing right"></span><span class="horn"></span>
+                      <span class="fin"></span><span class="belly"></span><span class="eye left"></span>
+                      <span class="eye right"></span><span class="nose"></span><span class="mark"></span>
+                      <span class="initial">{{ pimpam.initial }}</span>
+                    </span>
+                  </span>
+                {% endfor %}
+              </div>
+            {% endif %}
           </li>
         {% endfor %}
       </ul>
-      <a class="button-link secondary pimpam-summary-link" href="?tab=pimpams">Veure els PimPams</a>
+      <a class="button-link secondary pimpam-summary-link" href="?tab=pimpams">Els teus PimPams</a>
     {% else %}
       <p>Encara no tens PimPams. En pots guanyar fent exercicis: quan acabes un exercici, reps un PimPam.</p>
-      <a class="button-link secondary pimpam-summary-link" href="?tab=pimpams">Veure el cataleg</a>
+      <a class="button-link secondary pimpam-summary-link" href="?tab=pimpams">Els teus PimPams</a>
     {% endif %}
   </aside>
 </section>
 
 <nav class="tabs" aria-label="Seccions de portada">
-  <a class="{% if active_tab == 'categories' %}active{% endif %}" href="?tab=categories">Preguntes</a>
+  <a class="{% if active_tab == 'categories' %}active{% endif %}" href="?tab=categories">Per fer</a>
   <a class="{% if active_tab == 'results' %}active{% endif %}" href="?tab=results">Resultats</a>
-  <a class="{% if active_tab == 'exercises' %}active{% endif %}" href="?tab=exercises">Historial</a>
   <a class="{% if active_tab == 'pimpams' %}active{% endif %}" href="?tab=pimpams">PimPams</a>
 </nav>
 
-{% if active_tab == 'exercises' %}
-  <section>
-    <h2>Historial</h2>
-    {% if history_page and history_page.object_list %}
-      <div class="history-table-wrap">
-        <table class="history-table">
-          <thead>
-            <tr>
-              <th>Categoria</th>
-              <th>Nivell</th>
-              <th>Pregunta</th>
-              <th>Vegades feta</th>
-              <th>PimPam</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for row in history_page.object_list %}
-              <tr>
-                <td>{{ row.category.name }}</td>
-                <td>{{ row.level_label }}</td>
-                <td><a href="{{ row.exercise.get_absolute_url }}">{{ row.exercise.title|default:"Exercici sense titol" }}</a></td>
-                <td>{{ row.done_count }}</td>
-                <td>
-                  {% if row.pimpam %}
-                    <span class="history-pimpam">{{ row.pimpam.name }} · {{ row.pimpam.rarity }} ★</span>
-                  {% else %}
-                    <span class="muted">-</span>
-                  {% endif %}
-                </td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-      {% if history_page.has_other_pages %}
-        <nav class="pagination" aria-label="Paginacio de l'historial">
-          {% if history_page.has_previous %}
-            <a class="button-link secondary" href="?tab=exercises&page={{ history_page.previous_page_number }}">Anterior</a>
-          {% endif %}
-          <span>Pagina {{ history_page.number }} de {{ history_page.paginator.num_pages }}</span>
-          {% if history_page.has_next %}
-            <a class="button-link secondary" href="?tab=exercises&page={{ history_page.next_page_number }}">Seguent</a>
-          {% endif %}
-        </nav>
-      {% endif %}
-    {% else %}
-      <p>Encara no has fet cap exercici.</p>
-    {% endif %}
-  </section>
-{% elif active_tab == 'results' %}
+{% if active_tab == 'results' %}
   <section>
     <h2>Resultats</h2>
     {% if student_attempts %}
@@ -141,14 +107,48 @@
           <strong>Encara no hi ha cap PimPam guanyat</strong>
         {% endif %}
       </section>
-      <ul class="result-list">
-        {% for attempt in student_attempts %}
-          <li>
-            <a href="{{ attempt.exercise.get_absolute_url }}">{{ attempt.exercise }}</a>
-            <span>{{ attempt.score }}% · {{ attempt.correct_count }}/{{ attempt.total_count }} · {{ attempt.created_at|date:"d/m/Y H:i" }}</span>
-          </li>
-        {% endfor %}
-      </ul>
+      <h3 class="history-heading">Historial d'exercicis</h3>
+      <div class="history-table-wrap">
+        <table class="history-table">
+          <thead>
+            <tr>
+              <th>Categoria</th>
+              <th>Nivell</th>
+              <th>Pregunta</th>
+              <th>Vegades feta</th>
+              <th>PimPam</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in history_page.object_list %}
+              <tr>
+                <td>{{ row.category.name }}</td>
+                <td>{{ row.level_label }}</td>
+                <td><a href="{{ row.exercise.get_absolute_url }}">{{ row.exercise.title|default:"Exercici sense titol" }}</a></td>
+                <td>{{ row.done_count }}</td>
+                <td>
+                  {% if row.pimpam %}
+                    <span class="history-pimpam">{{ row.pimpam.name }} · {{ row.pimpam.rarity }} ★</span>
+                  {% else %}
+                    <span class="muted">-</span>
+                  {% endif %}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% if history_page.has_other_pages %}
+        <nav class="pagination" aria-label="Paginacio de resultats">
+          {% if history_page.has_previous %}
+            <a class="button-link secondary" href="?tab=results&page={{ history_page.previous_page_number }}">Anterior</a>
+          {% endif %}
+          <span>Pagina {{ history_page.number }} de {{ history_page.paginator.num_pages }}</span>
+          {% if history_page.has_next %}
+            <a class="button-link secondary" href="?tab=results&page={{ history_page.next_page_number }}">Seguent</a>
+          {% endif %}
+        </nav>
+      {% endif %}
     {% else %}
       <p>Encara no has fet cap exercici.</p>
       <section class="top-player-banner">
@@ -167,7 +167,7 @@
   <section class="landing-section logged-question-section" aria-labelledby="logged-questions-title">
     <div class="section-heading">
       <p>Tria què vols practicar</p>
-      <h2 id="logged-questions-title">Preguntes</h2>
+      <h2 id="logged-questions-title">Per fer</h2>
     </div>
     <p class="try-copy">Escull una categoria i un nivell. Els exercicis que ja has fet queden marcats dins de cada grup.</p>
     <div class="landing-category-grid">

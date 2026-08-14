@@ -72,18 +72,21 @@ class LoggedInHomeTests(TestCase):
         session["student_id"] = self.student.pk
         session.save()
 
-    def test_logged_home_uses_questions_and_history_tabs(self):
+    def test_logged_home_uses_to_do_results_and_pimpams_tabs(self):
         response = self.client.get(reverse("home"))
 
-        self.assertContains(response, "Preguntes")
-        self.assertContains(response, "Historial")
+        self.assertContains(response, "Per fer")
+        self.assertContains(response, "Resultats")
+        self.assertContains(response, "PimPams")
         self.assertContains(response, "landing-category-card")
         self.assertContains(response, "Veure preguntes")
+        self.assertNotContains(response, 'href="?tab=exercises"')
         self.assertNotContains(response, "Exercicis per fer")
 
-    def test_history_tab_lists_attempts(self):
-        response = self.client.get(f"{reverse('home')}?tab=exercises")
+    def test_results_tab_lists_attempt_history(self):
+        response = self.client.get(f"{reverse('home')}?tab=results")
 
+        self.assertContains(response, "Historial d'exercicis")
         self.assertContains(response, "Categoria")
         self.assertContains(response, "Nivell")
         self.assertContains(response, "Pregunta")

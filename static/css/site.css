@@ -210,38 +210,68 @@ nav a:hover {
 }
 
 .pimpam-compact-list {
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.5rem;
 }
 
 .pimpam-compact-item {
   display: grid;
-  justify-items: center;
-  gap: 0.1rem;
-  border: 1px solid var(--line);
+  grid-template-columns: minmax(78px, 0.55fr) minmax(0, 1fr);
+  gap: 0.55rem;
+  align-items: center;
+  border: 1px solid color-mix(in srgb, currentColor 32%, var(--line));
   border-radius: var(--radius-sm);
-  padding: 0.5rem 0.35rem;
-  background: var(--surface);
-  color: var(--accent-dark);
-  text-align: center;
+  padding: 0.55rem 0.65rem;
+  background:
+    linear-gradient(90deg, color-mix(in srgb, currentColor 13%, transparent), transparent 68%),
+    var(--surface);
+  overflow: hidden;
 }
 
-.pimpam-compact-item span {
-  color: #f9a825;
-  font-size: 1.05rem;
-  line-height: 1;
+.pimpam-count-copy {
+  display: grid;
+  gap: 0.05rem;
 }
 
-.pimpam-compact-item strong {
-  font-size: 0.85rem;
-  line-height: 1;
-}
-
-.pimpam-compact-item em {
+.pimpam-count-copy strong {
   color: var(--ink);
-  font-style: normal;
-  font-size: 1.25rem;
+  font-size: 1.75rem;
   font-weight: 950;
   line-height: 1;
+}
+
+.pimpam-count-copy span {
+  color: currentColor;
+  font-size: 0.88rem;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.pimpam-count-samples {
+  display: flex;
+  justify-content: flex-end;
+  min-width: 0;
+  padding-right: 0.25rem;
+}
+
+.pimpam-count-samples .mini-pimpam {
+  width: 44px;
+  height: 44px;
+  margin-left: -0.55rem;
+  border: 2px solid var(--paper);
+  border-radius: 999px;
+  background: var(--paper);
+  box-shadow: var(--shadow-soft);
+}
+
+.pimpam-count-samples .mini-pimpam:first-child {
+  margin-left: 0;
+}
+
+.pimpam-count-samples .pimpam-creature {
+  width: 78px;
+  height: 78px;
+  transform: scale(0.52);
+  transform-origin: center;
 }
 
 .pimpam-summary-link {
@@ -662,6 +692,11 @@ fieldset {
   border-radius: var(--radius);
   background: var(--paper);
   box-shadow: var(--shadow-soft);
+}
+
+.history-heading {
+  margin: 1.2rem 0 0.7rem;
+  font-size: 1.2rem;
 }
 
 .history-table {

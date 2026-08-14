@@ -378,7 +378,7 @@ def home(request):
         pimpam_catalog.sort(key=lambda item: (not item["is_owned"], item["pimpam"].rarity, item["pimpam"].name))
 
     default_tab = "categories" if student else "pimpams"
-    allowed_tabs = {"exercises", "results", "categories", "pimpams"} if student else {"pimpams", "categories"}
+    allowed_tabs = {"results", "categories", "pimpams"} if student else {"pimpams", "categories"}
     active_tab = request.GET.get("tab", default_tab)
     if active_tab not in allowed_tabs:
         active_tab = default_tab
